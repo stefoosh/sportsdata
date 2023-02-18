@@ -3,8 +3,10 @@ package sh.stefoosh.sportsdata.service;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Arrays;
@@ -13,13 +15,18 @@ import java.util.List;
 import static sh.stefoosh.sportsdata.service.Props.SPORTS_DATA_API_V_3_URI;
 import static sh.stefoosh.sportsdata.service.Props.SUBSCRIPTION_KEY_HEADER;
 
+@Service
+@EnableConfigurationProperties(ServiceProperties.class)
 public class SportsDataService {
+
+    private final ServiceProperties serviceProperties;
 
     @Setter(AccessLevel.PRIVATE)
     @Getter(AccessLevel.PRIVATE)
     private WebClient webClient;
 
-    public SportsDataService() {
+    public SportsDataService(ServiceProperties serviceProperties) {
+        this.serviceProperties = serviceProperties;
         setWebClient(WebClient.builder().baseUrl(SPORTS_DATA_API_V_3_URI).build());
     }
 
@@ -41,5 +48,9 @@ public class SportsDataService {
                 .retrieve()
                 .bodyToMono(typeRef)
                 .block();
+    }
+
+    public String propertiesPeekPreview() {
+        return this.serviceProperties.getHeader();
     }
 }

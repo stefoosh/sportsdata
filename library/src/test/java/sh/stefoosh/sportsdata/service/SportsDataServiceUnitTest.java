@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,18 +23,33 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class SportsDataServiceUnitTest {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    SportsDataService sportsDataService;
-    @Mock
-    private WebClient webClientMock;
-    @Mock
-    private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
-    @Mock
-    private WebClient.RequestHeadersSpec requestHeadersMock;
-    @Mock
-    private WebClient.ResponseSpec responseMock;
+//@ExtendWith(MockitoExtension.class)
+
+@SpringBootTest("service.header=Hella")
+public class SportsDataServiceUnitTest {
+    @SpringBootApplication
+    static class TestConfiguration {
+    }
+
+    @Autowired
+    private SportsDataService sportsDataService;
+
+    @Test
+    void contextLoads() {
+        assertThat(sportsDataService.propertiesPeekPreview()).isNotNull();
+    }
+
+//    SportsDataService sportsDataService;
+//    @Mock
+//    private WebClient webClientMock;
+//    @Mock
+//    private WebClient.RequestHeadersUriSpec requestHeadersUriMock;
+//    @Mock
+//    private WebClient.RequestHeadersSpec requestHeadersMock;
+//    @Mock
+//    private WebClient.ResponseSpec responseMock;
 
 //    @BeforeEach
 //    void setUp() {

@@ -10,13 +10,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.List;
 
+@SpringBootTest("service.header=Hellyah")
 public class SportsDataServiceIntegrationTest {
 
+    @SpringBootApplication
+    static class TestConfiguration {
+    }
+
     public static MockWebServer mockBackEnd;
+
+    @Autowired
     private SportsDataService sportsDataService;
     private ObjectMapper MAPPER = new ObjectMapper();
 
@@ -33,7 +43,7 @@ public class SportsDataServiceIntegrationTest {
 
     @BeforeEach
     void initialize() {
-        sportsDataService = new SportsDataService();
+//        sportsDataService = new SportsDataService();
         sportsDataService.setWebClientBaseUrl(String.format("http://localhost:%s", mockBackEnd.getPort()));
     }
 

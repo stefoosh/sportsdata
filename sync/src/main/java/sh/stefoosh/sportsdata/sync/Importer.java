@@ -3,6 +3,7 @@ package sh.stefoosh.sportsdata.sync;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +19,12 @@ import java.util.Arrays;
 @SpringBootApplication(scanBasePackages = "sh.stefoosh.sportsdata")
 public class Importer {
 
+	private SportsDataService sportsDataService;
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
+
+	public Importer(SportsDataService sportsDataService) {
+		this.sportsDataService = sportsDataService;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Importer.class, args);
@@ -33,7 +39,6 @@ public class Importer {
 	}
 
 	private void sportsDataProvingGround() {
-		SportsDataService sportsDataService = new SportsDataService();
 		List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues(new MlbStadiumResource());
 		assert stadiumVenues != null;
 
