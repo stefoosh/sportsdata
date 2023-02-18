@@ -45,7 +45,6 @@ public class SportsDataServiceIntegrationTest {
 
     @BeforeEach
     void initialize() {
-//        sportsDataService = new SportsDataService();
         sportsDataService.setWebClientBaseUrl(String.format("http://localhost:%s", mockBackEnd.getPort()));
     }
 
@@ -60,16 +59,15 @@ public class SportsDataServiceIntegrationTest {
                 6.9,
                 9.6
         );
-        MlbStadiumResource mlbStadiumResource = new MlbStadiumResource();
         mockBackEnd.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockStadiumVenue)))
                 .addHeader("Content-Type", "application/json"));
 
-        List<StadiumVenue> stadiumVenuesList = sportsDataService.getStadiumVenues(mlbStadiumResource);
+        List<StadiumVenue> stadiumVenuesList = sportsDataService.getStadiumVenues();
 
         Assertions.assertNotNull(stadiumVenuesList);
         Assertions.assertEquals(stadiumVenuesList.get(0), mockStadiumVenue);
         RecordedRequest recordedRequest = mockBackEnd.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
-        Assertions.assertEquals(mlbStadiumResource.getEndpoint(), recordedRequest.getPath());
+        Assertions.assertEquals(MlbStadiumResource.END_POINT, recordedRequest.getPath());
     }
 }

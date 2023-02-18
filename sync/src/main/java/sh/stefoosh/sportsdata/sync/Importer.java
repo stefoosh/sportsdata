@@ -38,7 +38,7 @@ public class Importer {
 	}
 
 	private void sportsDataProvingGround() {
-		List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues(new MlbStadiumResource());
+		List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues();
 		assert stadiumVenues != null;
 
 		ObjectMapper mapper = new ObjectMapper();

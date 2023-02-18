@@ -1,12 +1,13 @@
 package sh.stefoosh.sportsdata.service;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-@Getter
-@Setter
+@Component
 public class MlbStadiumResource extends StadiumVenueResource {
-    public MlbStadiumResource() {
-        super(Props.MLB_API_SUBSCRIPTION_KEY, "/mlb/scores/json/Stadiums");
+
+    public static final String END_POINT = "/mlb/scores/json/Stadiums";
+
+    public MlbStadiumResource(ServiceProperties serviceProperties) {
+        super(serviceProperties.getMlbSubscriptionKey(), END_POINT);
     }
 }

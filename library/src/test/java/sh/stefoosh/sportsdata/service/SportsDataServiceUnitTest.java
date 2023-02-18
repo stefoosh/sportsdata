@@ -18,11 +18,6 @@ public class SportsDataServiceUnitTest {
     @Autowired
     private SportsDataService sportsDataService;
 
-    @Test
-    void contextLoads() {
-        assertThat(sportsDataService.getApiAuthHeaderKey()).isNotNull();
-    }
-
 //    SportsDataService sportsDataService;
 //    @Mock
 //    private WebClient webClientMock;

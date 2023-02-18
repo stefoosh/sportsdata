@@ -1,8 +1,6 @@
 package sh.stefoosh.sportsdata.service;
 
-public interface Resource {
+public interface SportsDataResource {
      String getApiKey();
      String getEndpoint();
-
-//     Class<?> getResponseBodyClass();
 }

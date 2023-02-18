@@ -3,8 +3,6 @@ package sh.stefoosh.sportsdata.service;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -20,6 +18,7 @@ public class SportsDataService {
 
 //    private static final Logger LOG = LoggerFactory.getLogger(SportsDataService.class);
     private final ServiceProperties serviceProperties;
+    private final MlbStadiumResource mlbStadiumResource;
 
     @Setter(AccessLevel.PRIVATE)
     @Getter(AccessLevel.PRIVATE)
@@ -27,19 +26,19 @@ public class SportsDataService {
 
     public SportsDataService(ServiceProperties serviceProperties) {
         this.serviceProperties = serviceProperties;
-
-        setWebClient(WebClient.builder().baseUrl(getSportsDataApiBaseUrl()).build());
+        this.mlbStadiumResource = new MlbStadiumResource(serviceProperties);
+        setWebClient(WebClient.builder().baseUrl(serviceProperties.getSportsDataApiBaseUrl()).build());
     }
 
     public void setWebClientBaseUrl(String baseUrl) {
         setWebClient(WebClient.builder().baseUrl(baseUrl).build());
     }
 
-    public List<StadiumVenue> getStadiumVenues(StadiumVenueResource resource) {
-        return Arrays.asList(getResponseBody(resource, StadiumVenue[].class));
+    public List<StadiumVenue> getStadiumVenues() {
+        return Arrays.asList(getResponseBody(mlbStadiumResource, StadiumVenue[].class));
     }
 
-    private <T extends Resource, G> G getResponseBody(T resource, Class<G> cls) {
+    private <T extends SportsDataResource, G> G getResponseBody(T resource, Class<G> cls) {
         ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(cls);
 
         return getWebClient().get()
@@ -49,13 +48,5 @@ public class SportsDataService {
                 .retrieve()
                 .bodyToMono(typeRef)
                 .block();
-    }
-
-    public String getApiAuthHeaderKey() {
-        return serviceProperties.getApiAuthHeaderKey();
-    }
-
-    public String getSportsDataApiBaseUrl() {
-        return serviceProperties.getSportsDataApiBaseUrl();
     }
 }
