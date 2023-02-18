@@ -11,4 +11,9 @@ public abstract class StadiumVenueResource implements SportsDataResource {
 
     @Getter(onMethod = @__(@Override))
     private String endpoint;
+
+    @Override
+    public Class<StadiumVenue[]> getResponseBodyClass() {
+        return StadiumVenue[].class;
+    }
 }

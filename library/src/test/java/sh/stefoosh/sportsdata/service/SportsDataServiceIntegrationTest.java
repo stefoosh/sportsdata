@@ -65,7 +65,7 @@ public class SportsDataServiceIntegrationTest {
         List<StadiumVenue> stadiumVenuesList = sportsDataService.getStadiumVenues();
 
         Assertions.assertNotNull(stadiumVenuesList);
-        Assertions.assertEquals(stadiumVenuesList.get(0), mockStadiumVenue);
+        Assertions.assertEquals(stadiumVenuesList.stream().iterator().next(), mockStadiumVenue);
         RecordedRequest recordedRequest = mockBackEnd.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MlbStadiumResource.END_POINT, recordedRequest.getPath());

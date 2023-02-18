@@ -35,11 +35,12 @@ public class SportsDataService {
     }
 
     public List<StadiumVenue> getStadiumVenues() {
-        return Arrays.asList(getResponseBody(mlbStadiumResource, StadiumVenue[].class));
+        return Arrays.asList(getResponseBody(mlbStadiumResource));
     }
 
-    private <T extends SportsDataResource, G> G getResponseBody(T resource, Class<G> cls) {
-        ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(cls);
+    private <T extends SportsDataResource, G> G getResponseBody(T resource) {
+
+        ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(resource.getResponseBodyClass());
 
         return getWebClient().get()
                 .uri(resource.getEndpoint())
