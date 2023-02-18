@@ -8,15 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.reactive.function.client.WebClient;
 import sh.stefoosh.sportsdata.service.MlbStadiumResource;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 import sh.stefoosh.sportsdata.service.StadiumVenue;
 
 import java.util.List;
 import java.util.Arrays;
-
-import static sh.stefoosh.sportsdata.service.Props.SPORTS_DATA_API_V_3_URI;
 
 @SpringBootApplication(scanBasePackages = "sh.stefoosh.sportsdata")
 public class Importer {
@@ -36,8 +33,7 @@ public class Importer {
 	}
 
 	private void sportsDataProvingGround() {
-		WebClient webClient = WebClient.builder().baseUrl(SPORTS_DATA_API_V_3_URI).build();
-		SportsDataService sportsDataService = new SportsDataService(webClient);
+		SportsDataService sportsDataService = new SportsDataService();
 		List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues(new MlbStadiumResource());
 		assert stadiumVenues != null;
 

@@ -33,8 +33,8 @@ public class SportsDataServiceIntegrationTest {
 
     @BeforeEach
     void initialize() {
-        String baseUrl = String.format("http://localhost:%s", mockBackEnd.getPort());
-        sportsDataService = new SportsDataService(baseUrl);
+        sportsDataService = new SportsDataService();
+        sportsDataService.setWebClientBaseUrl(String.format("http://localhost:%s", mockBackEnd.getPort()));
     }
 
     @Test
