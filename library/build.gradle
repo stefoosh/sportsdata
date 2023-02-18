@@ -49,10 +49,12 @@ dependencyManagement {
 
 dependencies {
     implementation "io.netty:netty-resolver-dns-native-macos:${nettyResolverMacOsVersion}:${nettyResolverMacOsSilicon}"
+    implementation "jakarta.validation:jakarta.validation-api:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
 
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"

@@ -3,6 +3,8 @@ package sh.stefoosh.sportsdata.service;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -12,12 +14,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Arrays;
 import java.util.List;
 
-import static sh.stefoosh.sportsdata.service.Props.SPORTS_DATA_API_V_3_URI;
-
 @Service
 @EnableConfigurationProperties(ServiceProperties.class)
 public class SportsDataService {
 
+//    private static final Logger LOG = LoggerFactory.getLogger(SportsDataService.class);
     private final ServiceProperties serviceProperties;
 
     @Setter(AccessLevel.PRIVATE)
@@ -26,7 +27,8 @@ public class SportsDataService {
 
     public SportsDataService(ServiceProperties serviceProperties) {
         this.serviceProperties = serviceProperties;
-        setWebClient(WebClient.builder().baseUrl(SPORTS_DATA_API_V_3_URI).build());
+
+        setWebClient(WebClient.builder().baseUrl(getSportsDataApiBaseUrl()).build());
     }
 
     public void setWebClientBaseUrl(String baseUrl) {
@@ -51,5 +53,9 @@ public class SportsDataService {
 
     public String getApiAuthHeaderKey() {
         return serviceProperties.getApiAuthHeaderKey();
+    }
+
+    public String getSportsDataApiBaseUrl() {
+        return serviceProperties.getSportsDataApiBaseUrl();
     }
 }
