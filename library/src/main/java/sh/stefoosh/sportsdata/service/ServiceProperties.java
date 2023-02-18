@@ -9,6 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("service")
 public class ServiceProperties {
 	private String url;
-	private String header;
+	private String apiAuthHeaderKey;
 	private String mlbkey;
 }

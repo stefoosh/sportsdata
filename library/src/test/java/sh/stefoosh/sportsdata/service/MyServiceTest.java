@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest("service.header=Hello")
+@SpringBootTest("service.apiAuthHeaderKey=Hello")
 public class MyServiceTest {
 
 	@Autowired

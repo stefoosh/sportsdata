@@ -1,33 +1,15 @@
 package sh.stefoosh.sportsdata.service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import sh.stefoosh.sportsdata.service.MlbStadiumResource;
-import sh.stefoosh.sportsdata.service.SportsDataService;
-import sh.stefoosh.sportsdata.service.StadiumVenue;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 //@ExtendWith(MockitoExtension.class)
 
-@SpringBootTest("service.header=Hella")
+@SpringBootTest("service.apiAuthHeaderKey=Hella")
 public class SportsDataServiceUnitTest {
     @SpringBootApplication
     static class TestConfiguration {
@@ -38,7 +20,7 @@ public class SportsDataServiceUnitTest {
 
     @Test
     void contextLoads() {
-        assertThat(sportsDataService.propertiesPeekPreview()).isNotNull();
+        assertThat(sportsDataService.getApiAuthHeaderKey()).isNotNull();
     }
 
 //    SportsDataService sportsDataService;

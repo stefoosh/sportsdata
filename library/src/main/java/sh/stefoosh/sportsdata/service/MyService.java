@@ -11,6 +11,6 @@ public class MyService {
         this.serviceProperties = serviceProperties;
     }
     public String message() {
-        return this.serviceProperties.getHeader();
+        return serviceProperties.getApiAuthHeaderKey();
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.List;
 
-@SpringBootTest("service.header=Hellyah")
+@SpringBootTest("service.apiAuthHeaderKey=Hellyah")
 public class SportsDataServiceIntegrationTest {
 
     @SpringBootApplication

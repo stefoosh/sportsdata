@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static sh.stefoosh.sportsdata.service.Props.SPORTS_DATA_API_V_3_URI;
-import static sh.stefoosh.sportsdata.service.Props.SUBSCRIPTION_KEY_HEADER;
 
 @Service
 @EnableConfigurationProperties(ServiceProperties.class)
@@ -43,14 +42,14 @@ public class SportsDataService {
 
         return getWebClient().get()
                 .uri(resource.getEndpoint())
-                .header(SUBSCRIPTION_KEY_HEADER, resource.getApiKey())
+                .header(serviceProperties.getApiAuthHeaderKey(), resource.getApiKey())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(typeRef)
                 .block();
     }
 
-    public String propertiesPeekPreview() {
-        return this.serviceProperties.getHeader();
+    public String getApiAuthHeaderKey() {
+        return serviceProperties.getApiAuthHeaderKey();
     }
 }
