@@ -1,0 +1,84 @@
+import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
+
+buildscript {
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${springGradleDependencyManagementPluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:${spotbugsPluginVersion}"
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "${springGradleDependencyManagementPluginVersion}"
+    id "org.springframework.boot" version "${springBootVersion}" apply false
+}
+
+repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://dl.bintray.com/servicetalk/servicetalk/" }
+}
+
+apply plugin: "java"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of("$javaLanguageVersion".toInteger()))
+    }
+}
+
+apply plugin: "idea"
+idea {
+	module {
+        languageLevel = new IdeaLanguageLevel("${javaLanguageVersion}")
+	}
+}
+
+dependencyManagement {
+    imports {
+// To tell Gradle to not build an executable jar for the Library project, you must add the following blocks to the
+// build.gradle created by the Spring Initializr:
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+dependencies {
+    implementation "io.netty:netty-resolver-dns-native-macos:${nettyResolverMacOsVersion}:${nettyResolverMacOsSilicon}"
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+
+    testImplementation "com.squareup.okhttp3:mockwebserver:${mockWebServerVersion}"
+    testImplementation "io.projectreactor:reactor-test:${reactorTestVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+		events = ["passed", "skipped", "failed", "standardOut", "standardError"]
+		exceptionFormat "full"
+//        events = ["passed", "skipped", "failed"]
+    }
+}
+
+//apply plugin: "checkstyle"
+//checkstyle {
+//	toolVersion = "${checkstyleVersion}"
+//	sourceSets = [sourceSets.main]
+//}
+//
+//apply plugin: "com.github.spotbugs"
+//spotbugs {
+//	onlyAnalyze = ['sh.stefoosh.sportsdata.sync.*']
+//}

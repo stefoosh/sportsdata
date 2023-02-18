@@ -1,0 +1,69 @@
+import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
+
+buildscript {
+	dependencies {
+		classpath "io.spring.gradle:dependency-management-plugin:1.1.0"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.2"
+		classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:$spotbugsPluginVersion"
+	}
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+}
+
+plugins {
+	id "io.spring.dependency-management" version "1.1.0"
+	id "org.springframework.boot" version "3.0.2"
+
+}
+
+repositories {
+	maven { url "https://plugins.gradle.org/m2/" }
+	maven { url "https://dl.bintray.com/servicetalk/servicetalk/" }
+}
+
+apply plugin: "java"
+apply plugin: "org.springframework.boot"
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(17))
+	}
+}
+
+apply plugin: "idea"
+idea {
+	module {
+		languageLevel = new IdeaLanguageLevel("17")
+	}
+}
+
+dependencies {
+	// exposes /health among other things
+	implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation project(':library')
+
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+}
+
+test {
+	useJUnitPlatform()
+}
+
+//apply plugin: "checkstyle"
+//checkstyle {
+//	toolVersion = "${checkstyleVersion}"
+//	sourceSets = [sourceSets.main]
+//}
+//
+//apply plugin: "com.github.spotbugs"
+//spotbugs {
+//	onlyAnalyze = ['sh.stefoosh.sportsdata.application.*']
+//}
