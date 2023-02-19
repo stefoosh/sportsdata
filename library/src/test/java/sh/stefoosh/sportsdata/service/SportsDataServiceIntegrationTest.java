@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.test.context.TestPropertySource;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
+import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,6 +1,7 @@
-package sh.stefoosh.sportsdata.service;
+package sh.stefoosh.sportsdata.resource;
 
 import org.springframework.stereotype.Component;
+import sh.stefoosh.sportsdata.service.ServiceProperties;
 
 @Component
 public class MlbStadiumResource extends StadiumVenueResource {

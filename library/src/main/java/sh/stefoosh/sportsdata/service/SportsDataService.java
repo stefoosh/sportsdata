@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
+import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
+import sh.stefoosh.sportsdata.resource.SportsDataResource;
 
 import java.util.Arrays;
 import java.util.List;

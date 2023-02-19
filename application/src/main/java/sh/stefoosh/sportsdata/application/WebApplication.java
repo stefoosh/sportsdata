@@ -2,14 +2,13 @@ package sh.stefoosh.sportsdata.application;
 
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
-import sh.stefoosh.sportsdata.service.MlbStadiumResource;
+import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 import sh.stefoosh.sportsdata.service.MongoDbService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sh.stefoosh.sportsdata.service.StadiumVenueResource;
 
 import java.util.List;
 

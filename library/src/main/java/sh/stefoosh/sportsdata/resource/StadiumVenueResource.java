@@ -1,4 +1,4 @@
-package sh.stefoosh.sportsdata.service;
+package sh.stefoosh.sportsdata.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
