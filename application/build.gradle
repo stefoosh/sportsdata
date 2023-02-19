@@ -45,6 +45,7 @@ dependencies {
 	// exposes /health among other things
 	implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation "org.springframework.data:spring-data-mongodb:${springDataMongoDbVersion}"
 	implementation project(':library')
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"

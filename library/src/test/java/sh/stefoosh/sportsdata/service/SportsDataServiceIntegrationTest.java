@@ -13,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.TestPropertySource;
+import sh.stefoosh.sportsdata.model.StadiumVenue;
+import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
 @TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
+    @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
     @SpringBootApplication
     static class TestConfiguration {
     }
@@ -51,6 +55,7 @@ public class SportsDataServiceIntegrationTest {
     @Test
     void givenMlbStadiumsResource_thenReturnMlbStadiums() throws JsonProcessingException, InterruptedException {
         StadiumVenue mockStadiumVenue = new StadiumVenue(
+                "some-mongodb-id",
                 "22",
                 "SF",
                 "Candlestick Park",

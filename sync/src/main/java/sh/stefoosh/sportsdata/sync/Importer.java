@@ -8,19 +8,28 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
+import sh.stefoosh.sportsdata.service.MongoDbService;
 import sh.stefoosh.sportsdata.service.SportsDataService;
-import sh.stefoosh.sportsdata.service.StadiumVenue;
+import sh.stefoosh.sportsdata.model.StadiumVenue;
+
 
 import java.util.List;
 import java.util.Arrays;
 
-@SpringBootApplication(scanBasePackages = "sh.stefoosh.sportsdata")
+@EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
+@SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
 public class Importer {
+
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
+
+	private final MongoDbService mongoDbService;
 
 	private final SportsDataService sportsDataService;
 
-	public Importer(SportsDataService sportsDataService) {
+	public Importer(MongoDbService mongoDbService, SportsDataService sportsDataService) {
+		this.mongoDbService = mongoDbService;
 		this.sportsDataService = sportsDataService;
 	}
 
@@ -45,8 +54,9 @@ public class Importer {
 				.map(object -> mapper.convertValue(object, StadiumVenue.class))
 				.map(StadiumVenue::toString)
 				.toList();
-
 		list.forEach(LOG::info);
+
+		mongoDbService.stadiumVenueRepository.saveAll(stadiumVenues);
 	}
 
 	private enum Arguments {

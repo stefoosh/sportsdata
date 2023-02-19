@@ -2,6 +2,7 @@ package sh.stefoosh.sportsdata.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 @AllArgsConstructor
 public abstract class StadiumVenueResource implements SportsDataResource {

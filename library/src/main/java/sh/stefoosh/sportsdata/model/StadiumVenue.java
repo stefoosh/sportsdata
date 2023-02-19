@@ -1,15 +1,20 @@
-package sh.stefoosh.sportsdata.service;
+package sh.stefoosh.sportsdata.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class StadiumVenue {
+    @Id
+    private String id;
     private String StadiumID;
     private String Name;
     private String City;

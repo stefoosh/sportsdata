@@ -5,9 +5,11 @@ Based on:
 - Gradle 7.5
 - OpenJDK 17
 - Spring Boot 3
+- Spring Data MongoDB 4
+- MongoDB 6
 
 Featuring:
-- Backend client service calls with Spring 5 WebClient
+- Backend client service calls with Spring Framework 5 WebClient
 
 #
 Run unit and integration tests on all subprojects

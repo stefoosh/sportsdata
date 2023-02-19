@@ -43,6 +43,7 @@ idea {
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+	implementation "org.springframework.data:spring-data-mongodb:${springDataMongoDbVersion}"
 	implementation project(':library')
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
