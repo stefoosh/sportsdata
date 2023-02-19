@@ -3,6 +3,7 @@ package sh.stefoosh.sportsdata.sync;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
-import sh.stefoosh.sportsdata.service.MongoDbService;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 
@@ -24,12 +24,12 @@ public class Importer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
 
-	private final MongoDbService mongoDbService;
+	@Autowired
+	public StadiumVenueRepository stadiumVenueRepository;
 
 	private final SportsDataService sportsDataService;
 
-	public Importer(MongoDbService mongoDbService, SportsDataService sportsDataService) {
-		this.mongoDbService = mongoDbService;
+	public Importer(SportsDataService sportsDataService) {
 		this.sportsDataService = sportsDataService;
 	}
 
@@ -56,7 +56,7 @@ public class Importer {
 				.toList();
 		list.forEach(LOG::info);
 
-		mongoDbService.stadiumVenueRepository.saveAll(stadiumVenues);
+		stadiumVenueRepository.saveAll(stadiumVenues);
 	}
 
 	private enum Arguments {

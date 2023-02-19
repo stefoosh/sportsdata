@@ -1,9 +1,8 @@
 package sh.stefoosh.sportsdata.application;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
-import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
-import sh.stefoosh.sportsdata.service.MongoDbService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -17,15 +16,15 @@ import java.util.List;
 @RestController
 public class WebApplication {
 
-	private final MongoDbService mongoDbService;
+	@Autowired
+	public StadiumVenueRepository stadiumVenueRepository;
 
-	public WebApplication(MongoDbService mongoDbService) {
-		this.mongoDbService = mongoDbService;
+	public WebApplication() {
 	}
 
-	@GetMapping(MlbStadiumResource.END_POINT)
+	@GetMapping("/")
 	public List<StadiumVenue> home() {
-		return mongoDbService.stadiumVenueRepository.findAll();
+		return stadiumVenueRepository.findAll();
 	}
 
 	public static void main(String[] args) {

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@TestPropertySource(locations = "/application.properties")
+//@TestPropertySource(locations = "/application.properties")
 public class WebApplicationTest {
 
 //	@Autowired
