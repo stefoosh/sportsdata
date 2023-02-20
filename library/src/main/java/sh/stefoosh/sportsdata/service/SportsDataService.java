@@ -3,6 +3,8 @@ package sh.stefoosh.sportsdata.service;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -11,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 import sh.stefoosh.sportsdata.resource.SportsDataResource;
+import sh.stefoosh.sportsdata.resource.StadiumVenueResource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +22,8 @@ import java.util.List;
 @EnableConfigurationProperties(ServiceProperties.class)
 public class SportsDataService {
 
-//    private static final Logger LOG = LoggerFactory.getLogger(SportsDataService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SportsDataService.class);
     private final ServiceProperties serviceProperties;
-    private final MlbStadiumResource mlbStadiumResource;
 
     @Setter(AccessLevel.PRIVATE)
     @Getter(AccessLevel.PRIVATE)
@@ -29,7 +31,6 @@ public class SportsDataService {
 
     public SportsDataService(ServiceProperties serviceProperties) {
         this.serviceProperties = serviceProperties;
-        this.mlbStadiumResource = new MlbStadiumResource(serviceProperties);
         setWebClient(WebClient.builder().baseUrl(serviceProperties.getSportsDataApiBaseUrl()).build());
     }
 
@@ -37,11 +38,17 @@ public class SportsDataService {
         setWebClient(WebClient.builder().baseUrl(baseUrl).build());
     }
 
-    public List<StadiumVenue> getStadiumVenues() {
-        return Arrays.asList(getResponseBody(mlbStadiumResource));
+    public List<StadiumVenue> getMlbStadiums() {
+        return getStadiumVenues(new MlbStadiumResource(serviceProperties));
     }
 
-    private <T extends SportsDataResource, G> G getResponseBody(T resource) {
+    private List<StadiumVenue> getStadiumVenues(StadiumVenueResource stadiumVenueResource) {
+        return Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
+    }
+
+    private <T extends SportsDataResource, G> G getUpstreamResponseBody(T resource) {
+        // TODO: this isn't logging
+        LOG.debug("Fetching upstream {}", resource.getEndpoint());
 
         ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(resource.getResponseBodyClass());
 

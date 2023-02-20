@@ -8,11 +8,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class StadiumVenue {
+    private String sport;
     @Id
     private String id;
     private String StadiumID;

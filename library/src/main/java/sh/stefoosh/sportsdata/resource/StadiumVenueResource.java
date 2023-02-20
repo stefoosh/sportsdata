@@ -2,6 +2,7 @@ package sh.stefoosh.sportsdata.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 @AllArgsConstructor
