@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
@@ -17,6 +18,7 @@ import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
@@ -37,31 +39,29 @@ public class Importer {
 		SpringApplication.run(Importer.class, args);
 	}
 
+	private List<StadiumVenue> embedStadiumVenue(List<StadiumVenue> stadiumVenues, Sport sport) {
+		stadiumVenues.forEach(stadiumVenue -> stadiumVenue.setSport(sport.name()));
+		return stadiumVenues;
+	}
+
+	private void sportsDataProvingGround() {
+		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
+		LOG.debug("Fetched {} {}", upstreamMlbStadiums.size(), upstreamMlbStadiums);
+		List<StadiumVenue> documentMlbStadiums = embedStadiumVenue(upstreamMlbStadiums, Sport.mlb);
+		stadiumVenueRepository.saveAll(documentMlbStadiums);
+	}
+
+	private enum Arguments {
+		HELP,
+		IMPORT
+	}
+
 	private void beanDebugLogger(ApplicationContext ctx) {
 		LOG.debug("EAT YOUR BEANS");
 		Arrays.stream(ctx.getBeanDefinitionNames())
 				.sorted()
 				.forEach(LOG::debug);
 		LOG.debug("FINISHED BEANS");
-	}
-
-	private void sportsDataProvingGround() {
-		List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues();
-		assert stadiumVenues != null;
-
-		ObjectMapper mapper = new ObjectMapper();
-		List<String> list = stadiumVenues.stream()
-				.map(object -> mapper.convertValue(object, StadiumVenue.class))
-				.map(StadiumVenue::toString)
-				.toList();
-		list.forEach(LOG::info);
-
-		stadiumVenueRepository.saveAll(stadiumVenues);
-	}
-
-	private enum Arguments {
-		HELP,
-		IMPORT
 	}
 
 	@Bean
