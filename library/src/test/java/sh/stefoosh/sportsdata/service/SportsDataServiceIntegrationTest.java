@@ -61,13 +61,14 @@ public class SportsDataServiceIntegrationTest {
         StadiumVenue mockStadiumVenue = new StadiumVenue(
                 Sport.mlb.name(),
                 "some-mongodb-id",
-                "22",
+                22,
                 "SF",
                 "Candlestick Park",
                 "NorCal",
                 "YouEssAay",
                 6.9,
-                9.6
+                9.6,
+                10000
         );
         mockBackEnd.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockStadiumVenue)))
                 .addHeader("Content-Type", "application/json"));

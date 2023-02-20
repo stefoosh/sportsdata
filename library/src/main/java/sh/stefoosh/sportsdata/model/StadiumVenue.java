@@ -16,11 +16,12 @@ public class StadiumVenue {
     private String sport;
     @Id
     private String id;
-    private String StadiumID;
+    private int StadiumID;
     private String Name;
     private String City;
     private String State;
     private String Country;
     private double GeoLat;
     private double GeoLong;
+    private int Capacity;
 }

@@ -1,6 +1,5 @@
 package sh.stefoosh.sportsdata.sync;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
@@ -26,13 +28,10 @@ public class Importer {
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
 
 	@Autowired
-	public StadiumVenueRepository stadiumVenueRepository;
+	private StadiumVenueRepository stadiumVenueRepository;
 
-	private final SportsDataService sportsDataService;
-
-	public Importer(SportsDataService sportsDataService) {
-		this.sportsDataService = sportsDataService;
-	}
+	@Autowired
+	private SportsDataService sportsDataService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Importer.class, args);
@@ -44,14 +43,27 @@ public class Importer {
 	}
 
 	private void dispatchStadiumVenues(List<StadiumVenue> upstream, Sport sport) {
-		LOG.debug("Fetched {} {}", upstream.size(), upstream);
-		List<StadiumVenue> documentMlbStadiums = embedStadiumVenue(upstream, sport);
-		stadiumVenueRepository.saveAll(documentMlbStadiums);
+		LOG.debug("{} objects fetched", upstream.size());
+		List<StadiumVenue> embeddedDocuments = embedStadiumVenue(upstream, sport);
+		LOG.debug("{}", embeddedDocuments);
+		LOG.debug("{} documents embedded", embeddedDocuments.size());
+		List<StadiumVenue> saveAllResult = stadiumVenueRepository.saveAll(embeddedDocuments);
+		LOG.debug("{} documents saved", saveAllResult.size());
+
+		if (upstream.size() != saveAllResult.size()) {
+			LOG.error("Number of objects fetched and embedded {} should match the number of documents written {}",
+					upstream.size(), saveAllResult.size());
+		}
 	}
 
 	private void sportsDataProvingGround() {
-		dispatchStadiumVenues(sportsDataService.getMlbStadiums(), Sport.mlb);
-		dispatchStadiumVenues(sportsDataService.getNhlStadiums(), Sport.nhl);
+		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
+		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
+		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSocccerStadiums();
+
+		dispatchStadiumVenues(upstreamMlbStadiums, Sport.mlb);
+		dispatchStadiumVenues(upstreamNhlStadiums, Sport.nhl);
+		dispatchStadiumVenues(upstreamSoccerStadiums, Sport.soccer);
 	}
 
 	private enum Arguments {

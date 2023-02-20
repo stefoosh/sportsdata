@@ -23,4 +23,7 @@ public class ServiceProperties {
 
 	@NotBlank
 	private String nhlSubscriptionKey;
+
+	@NotBlank
+	private String soccerSubscriptionKey;
 }
