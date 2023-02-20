@@ -43,16 +43,15 @@ public class Importer {
 		return stadiumVenues;
 	}
 
-	private void sportsDataProvingGround() {
-		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
-		LOG.debug("Fetched {} {}", upstreamMlbStadiums.size(), upstreamMlbStadiums);
-		List<StadiumVenue> documentMlbStadiums = embedStadiumVenue(upstreamMlbStadiums, Sport.mlb);
+	private void dispatchStadiumVenues(List<StadiumVenue> upstream, Sport sport) {
+		LOG.debug("Fetched {} {}", upstream.size(), upstream);
+		List<StadiumVenue> documentMlbStadiums = embedStadiumVenue(upstream, sport);
 		stadiumVenueRepository.saveAll(documentMlbStadiums);
+	}
 
-		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-		LOG.debug("Fetched {} {}", upstreamNhlStadiums.size(), upstreamNhlStadiums);
-		List<StadiumVenue> documentNhlStadiums = embedStadiumVenue(upstreamNhlStadiums, Sport.nhl);
-		stadiumVenueRepository.saveAll(documentNhlStadiums);
+	private void sportsDataProvingGround() {
+		dispatchStadiumVenues(sportsDataService.getMlbStadiums(), Sport.mlb);
+		dispatchStadiumVenues(sportsDataService.getNhlStadiums(), Sport.nhl);
 	}
 
 	private enum Arguments {
