@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
-import sh.stefoosh.sportsdata.resource.SportsDataResource;
+import sh.stefoosh.sportsdata.resource.NhlStadiumResource;
+import sh.stefoosh.sportsdata.resource.ResourceBase;
 import sh.stefoosh.sportsdata.resource.StadiumVenueResource;
 
 import java.util.Arrays;
@@ -42,11 +43,15 @@ public class SportsDataService {
         return getStadiumVenues(new MlbStadiumResource(serviceProperties));
     }
 
+    public List<StadiumVenue> getNhlStadiums() {
+        return getStadiumVenues(new NhlStadiumResource(serviceProperties));
+    }
+
     private List<StadiumVenue> getStadiumVenues(StadiumVenueResource stadiumVenueResource) {
         return Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
     }
 
-    private <T extends SportsDataResource, G> G getUpstreamResponseBody(T resource) {
+    private <T extends ResourceBase, G> G getUpstreamResponseBody(T resource) {
         // TODO: this isn't logging
         LOG.debug("Fetching upstream {}", resource.getEndpoint());
 

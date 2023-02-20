@@ -18,7 +18,6 @@ import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
@@ -49,6 +48,11 @@ public class Importer {
 		LOG.debug("Fetched {} {}", upstreamMlbStadiums.size(), upstreamMlbStadiums);
 		List<StadiumVenue> documentMlbStadiums = embedStadiumVenue(upstreamMlbStadiums, Sport.mlb);
 		stadiumVenueRepository.saveAll(documentMlbStadiums);
+
+		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
+		LOG.debug("Fetched {} {}", upstreamNhlStadiums.size(), upstreamNhlStadiums);
+		List<StadiumVenue> documentNhlStadiums = embedStadiumVenue(upstreamNhlStadiums, Sport.nhl);
+		stadiumVenueRepository.saveAll(documentNhlStadiums);
 	}
 
 	private enum Arguments {

@@ -24,4 +24,3 @@ public class StadiumVenue {
     private double GeoLat;
     private double GeoLong;
 }
-
