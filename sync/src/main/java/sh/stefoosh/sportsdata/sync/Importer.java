@@ -41,11 +41,13 @@ public class Importer {
 
 	private void dispatchStadiumVenues(List<StadiumVenue> upstream, Sport sport) {
 		LOG.debug("{} objects fetched", upstream.size());
+		LOG.debug("{}", upstream);
 		List<StadiumVenue> embeddedDocuments = embedStadiumVenue(upstream, sport);
-		LOG.debug("{}", embeddedDocuments);
 		LOG.debug("{} documents embedded", embeddedDocuments.size());
+		LOG.debug("{}", embeddedDocuments);
 		List<StadiumVenue> saveAllResult = stadiumVenueRepository.saveAll(embeddedDocuments);
 		LOG.debug("{} documents saved", saveAllResult.size());
+		LOG.debug("{}", saveAllResult);
 
 		if (upstream.size() != saveAllResult.size()) {
 			LOG.error("Number of objects fetched and embedded {} should match the number of documents written {}",
