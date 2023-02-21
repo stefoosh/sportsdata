@@ -43,14 +43,13 @@ public class SportsDataService {
 
     public List<StadiumVenue> getMlbStadiums() {
         return getStadiumVenues(new MlbStadiumResource(serviceProperties));
-
     }
 
     public List<StadiumVenue> getNhlStadiums() {
         return getStadiumVenues(new NhlStadiumResource(serviceProperties));
     }
 
-    public List<StadiumVenue> getSocccerStadiums() {
+    public List<StadiumVenue> getSoccerStadiums() {
         return getStadiumVenues(new SoccerStadiumResource(serviceProperties));
     }
 
@@ -61,7 +60,6 @@ public class SportsDataService {
                     String.format("%s returned an empty list", stadiumVenueResource.getEndpoint()));
         }
         return stadiumVenues;
-//        return Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
     }
 
     private <T extends ResourceBase, G> G getUpstreamResponseBody(T resource) {

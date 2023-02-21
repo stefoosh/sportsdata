@@ -21,7 +21,6 @@ import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
 

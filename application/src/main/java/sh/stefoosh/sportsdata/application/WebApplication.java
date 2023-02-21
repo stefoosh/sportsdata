@@ -1,5 +1,6 @@
 package sh.stefoosh.sportsdata.application;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import org.springframework.boot.SpringApplication;
@@ -21,10 +22,16 @@ import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
 @RestController
 public class WebApplication {
 
+	@Autowired
 	public StadiumVenueRepository stadiumVenueRepository;
 
 	public WebApplication(StadiumVenueRepository stadiumVenueRepository) {
 		this.stadiumVenueRepository = stadiumVenueRepository;
+	}
+
+	@GetMapping("/")
+	public String root() {
+		return "Hella Werld";
 	}
 
 	@GetMapping(MLB_STADIUM_RESOURCE)

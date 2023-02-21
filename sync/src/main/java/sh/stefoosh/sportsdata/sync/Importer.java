@@ -17,9 +17,6 @@ import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
@@ -59,7 +56,7 @@ public class Importer {
 	private void sportsDataProvingGround() {
 		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
 		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSocccerStadiums();
+		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
 
 		dispatchStadiumVenues(upstreamMlbStadiums, Sport.mlb);
 		dispatchStadiumVenues(upstreamNhlStadiums, Sport.nhl);
