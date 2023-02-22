@@ -9,22 +9,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
+import sh.stefoosh.sportsdata.model.MlbStadium;
+import sh.stefoosh.sportsdata.repository.MlbStadiumRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
-import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 
 import java.util.List;
 import java.util.Arrays;
 
-@EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
+@EnableMongoRepositories(basePackageClasses = MlbStadiumRepository.class)
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
 public class Importer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
 
 	@Autowired
-	private StadiumVenueRepository stadiumVenueRepository;
+	private MlbStadiumRepository mlbStadiumRepository;
 
 	@Autowired
 	private SportsDataService sportsDataService;
@@ -33,11 +33,11 @@ public class Importer {
 		SpringApplication.run(Importer.class, args);
 	}
 
-	private void dispatchStadiumVenues(List<StadiumVenue> upstream) {
+	private void dispatchStadiumVenues(List<MlbStadium> upstream) {
 		LOG.debug("{} objects fetched", upstream.size());
 		LOG.debug("{}", upstream);
 
-		List<StadiumVenue> saveAllResult = stadiumVenueRepository.saveAll(upstream);
+		List<MlbStadium> saveAllResult = mlbStadiumRepository.saveAll(upstream);
 		LOG.debug("{} documents saved", saveAllResult.size());
 		LOG.debug("{}", saveAllResult);
 
@@ -48,12 +48,12 @@ public class Importer {
 	}
 
 	private void sportsDataProvingGround() {
-		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
-//		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-//		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
+		List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
+//		List<MlbStadium> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
+//		List<MlbStadium> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
 
 		dispatchStadiumVenues(upstreamMlbStadiums);
-//		dispatchStadiumVenues(upstreamNhlStadiums, Sport.nhl);
+//		dispatchStadiumVenues(upstreamNhlStadiums);
 //		dispatchStadiumVenues(upstreamSoccerStadiums, Sport.soccer);
 	}
 

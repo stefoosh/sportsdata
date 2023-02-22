@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.TestPropertySource;
-import sh.stefoosh.sportsdata.model.StadiumVenue;
-import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
+import sh.stefoosh.sportsdata.model.MlbStadium;
+import sh.stefoosh.sportsdata.repository.MlbStadiumRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,7 @@ import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
 @TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
-    @EnableMongoRepositories(basePackageClasses = StadiumVenueRepository.class)
+    @EnableMongoRepositories(basePackageClasses = MlbStadiumRepository.class)
     @SpringBootApplication
     static class TestConfiguration {
     }
@@ -56,7 +56,7 @@ public class SportsDataServiceIntegrationTest {
 
     @Test
     void givenStadiumVenueResource_thenStream () throws JsonProcessingException, InterruptedException {
-        StadiumVenue mockStadiumVenue = new StadiumVenue(
+        MlbStadium mockMlbStadium = new MlbStadium(
                 22,
                 "SF",
                 "Candlestick Park",
@@ -66,13 +66,13 @@ public class SportsDataServiceIntegrationTest {
                 9.6,
                 10000
         );
-        mockBackEnd.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockStadiumVenue)))
+        mockBackEnd.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbStadium)))
                 .addHeader("Content-Type", "application/json"));
 
-        List<StadiumVenue> stadiumVenues = sportsDataService.getMlbStadiums();
+        List<MlbStadium> mlbStadiums = sportsDataService.getMlbStadiums();
 
-        Assertions.assertNotNull(stadiumVenues);
-        Assertions.assertEquals(stadiumVenues.iterator().next(), mockStadiumVenue);
+        Assertions.assertNotNull(mlbStadiums);
+        Assertions.assertEquals(mlbStadiums.iterator().next(), mockMlbStadium);
         RecordedRequest recordedRequest = mockBackEnd.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_STADIUM_RESOURCE, recordedRequest.getPath());

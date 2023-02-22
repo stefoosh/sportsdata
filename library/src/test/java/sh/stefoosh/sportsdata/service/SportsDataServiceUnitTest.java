@@ -36,7 +36,7 @@ public class SportsDataServiceUnitTest {
 //    @Disabled("Need to properly mock elementTypeRed")
 //    @Test
 //    void givenMlbStadiumsResource_thenReturnMlbStadiums() {
-//        StadiumVenue mockStadiumVenue = new StadiumVenue(
+//        MlbStadium mockStadiumVenue = new MlbStadium(
 //                "22",
 //                "SF",
 //                "Candlestick Park",
@@ -45,7 +45,7 @@ public class SportsDataServiceUnitTest {
 //                6.9,
 //                9.6
 //        );
-//        StadiumVenue[] mockStadiumVenueArray = new StadiumVenue[]{mockStadiumVenue};
+//        MlbStadium[] mockStadiumVenueArray = new MlbStadium[]{mockStadiumVenue};
 //        when(webClientMock.get()).thenReturn(requestHeadersUriMock);
 //        MlbStadiumResource mlbStadiumResource = new MlbStadiumResource();
 //        when(requestHeadersUriMock.uri(mlbStadiumResource.getEndpoint())).thenReturn(requestHeadersMock);
@@ -55,11 +55,11 @@ public class SportsDataServiceUnitTest {
 ////        ParameterizedTypeReference<StadiumVenueResponseBody> elementTypeRef = ParameterizedTypeReference.forType(StadiumVenueResponseBody.class);
 ////        when(responseMock.bodyToMono(elementTypeRef)).thenReturn(Mono.just(mockStadiumVenueResponseBody));
 //
-//        ParameterizedTypeReference<StadiumVenue[]> elementTypeRef =
-//                ParameterizedTypeReference.forType(StadiumVenue[].class);
+//        ParameterizedTypeReference<MlbStadium[]> elementTypeRef =
+//                ParameterizedTypeReference.forType(MlbStadium[].class);
 //        when(responseMock.bodyToMono(elementTypeRef).thenReturn(Mono.just(mockStadiumVenueArray)));
 //
-//        List<StadiumVenue> stadiumVenues = sportsDataService.getStadiumVenues(mlbStadiumResource);
+//        List<MlbStadium> stadiumVenues = sportsDataService.getStadiumVenues(mlbStadiumResource);
 //
 //        Assertions.assertNotNull(stadiumVenues);
 //        Assertions.assertEquals(mockStadiumVenue, Arrays.asList(mockStadiumVenueArray));

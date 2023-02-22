@@ -10,7 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import sh.stefoosh.sportsdata.model.StadiumVenue;
+import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 import sh.stefoosh.sportsdata.resource.NhlStadiumResource;
 import sh.stefoosh.sportsdata.resource.ResourceBase;
@@ -41,25 +41,25 @@ public class SportsDataService {
         setWebClient(WebClient.builder().baseUrl(baseUrl).build());
     }
 
-    public List<StadiumVenue> getMlbStadiums() {
+    public List<MlbStadium> getMlbStadiums() {
         return getStadiumVenues(new MlbStadiumResource(serviceProperties));
     }
 
-    public List<StadiumVenue> getNhlStadiums() {
+    public List<MlbStadium> getNhlStadiums() {
         return getStadiumVenues(new NhlStadiumResource(serviceProperties));
     }
 
-    public List<StadiumVenue> getSoccerStadiums() {
+    public List<MlbStadium> getSoccerStadiums() {
         return getStadiumVenues(new SoccerStadiumResource(serviceProperties));
     }
 
-    private List<StadiumVenue> getStadiumVenues(StadiumVenueResource stadiumVenueResource) {
-        List<StadiumVenue> stadiumVenues = Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
-        if (stadiumVenues.isEmpty()) {
+    private List<MlbStadium> getStadiumVenues(StadiumVenueResource stadiumVenueResource) {
+        List<MlbStadium> mlbStadiums = Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
+        if (mlbStadiums.isEmpty()) {
             throw new NoSuchElementException(
                     String.format("%s returned an empty list", stadiumVenueResource.getEndpoint()));
         }
-        return stadiumVenues;
+        return mlbStadiums;
     }
 
     private <T extends ResourceBase, G> G getUpstreamResponseBody(T resource) {
