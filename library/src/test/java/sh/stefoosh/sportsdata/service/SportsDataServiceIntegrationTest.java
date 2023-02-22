@@ -57,7 +57,6 @@ public class SportsDataServiceIntegrationTest {
     @Test
     void givenStadiumVenueResource_thenStream () throws JsonProcessingException, InterruptedException {
         StadiumVenue mockStadiumVenue = new StadiumVenue(
-                "some-mongodb-id",
                 22,
                 "SF",
                 "Candlestick Park",

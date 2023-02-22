@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 @AllArgsConstructor
@@ -14,11 +16,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class StadiumVenue {
-    @Id
-    private String id;
 
+//    @MongoId(FieldType.INT32)
     @JsonProperty("StadiumID")
-    private int stadiumId;
+    private int id;
 
     @JsonProperty("Name")
     private String name;
