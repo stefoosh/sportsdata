@@ -6,4 +6,5 @@ import sh.stefoosh.sportsdata.model.StadiumVenue;
 
 @Repository
 public interface StadiumVenueRepository extends MongoRepository<StadiumVenue, String> {
+
 }

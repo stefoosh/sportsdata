@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.TestPropertySource;
-import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
@@ -58,7 +57,6 @@ public class SportsDataServiceIntegrationTest {
     @Test
     void givenStadiumVenueResource_thenStream () throws JsonProcessingException, InterruptedException {
         StadiumVenue mockStadiumVenue = new StadiumVenue(
-                Sport.mlb.name(),
                 "some-mongodb-id",
                 22,
                 "SF",

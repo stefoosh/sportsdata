@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
@@ -34,35 +33,28 @@ public class Importer {
 		SpringApplication.run(Importer.class, args);
 	}
 
-	private List<StadiumVenue> embedStadiumVenue(List<StadiumVenue> stadiumVenues, Sport sport) {
-		stadiumVenues.forEach(stadiumVenue -> stadiumVenue.setSport(sport.name()));
-		return stadiumVenues;
-	}
-
-	private void dispatchStadiumVenues(List<StadiumVenue> upstream, Sport sport) {
+	private void dispatchStadiumVenues(List<StadiumVenue> upstream) {
 		LOG.debug("{} objects fetched", upstream.size());
 		LOG.debug("{}", upstream);
-		List<StadiumVenue> embeddedDocuments = embedStadiumVenue(upstream, sport);
-		LOG.debug("{} documents embedded", embeddedDocuments.size());
-		LOG.debug("{}", embeddedDocuments);
-		List<StadiumVenue> saveAllResult = stadiumVenueRepository.saveAll(embeddedDocuments);
+
+		List<StadiumVenue> saveAllResult = stadiumVenueRepository.saveAll(upstream);
 		LOG.debug("{} documents saved", saveAllResult.size());
 		LOG.debug("{}", saveAllResult);
 
 		if (upstream.size() != saveAllResult.size()) {
-			LOG.error("Number of objects fetched and embedded {} should match the number of documents written {}",
+			LOG.error("Number of objects fetched {} and saved {} should match",
 					upstream.size(), saveAllResult.size());
 		}
 	}
 
 	private void sportsDataProvingGround() {
 		List<StadiumVenue> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
-		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
+//		List<StadiumVenue> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
+//		List<StadiumVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
 
-		dispatchStadiumVenues(upstreamMlbStadiums, Sport.mlb);
-		dispatchStadiumVenues(upstreamNhlStadiums, Sport.nhl);
-		dispatchStadiumVenues(upstreamSoccerStadiums, Sport.soccer);
+		dispatchStadiumVenues(upstreamMlbStadiums);
+//		dispatchStadiumVenues(upstreamNhlStadiums, Sport.nhl);
+//		dispatchStadiumVenues(upstreamSoccerStadiums, Sport.soccer);
 	}
 
 	private enum Arguments {
