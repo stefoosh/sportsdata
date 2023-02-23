@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.service.ServiceProperties;
 
-import static sh.stefoosh.sportsdata.constants.Endpoints.SOCCER_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoint.SOCCER_SCORES_JSON_VENUES;
 
 @Component
 public class SoccerStadiumResource extends StadiumVenueResource {
 
     public SoccerStadiumResource(ServiceProperties serviceProperties) {
-        super(serviceProperties.getSoccerSubscriptionKey(), SOCCER_STADIUM_RESOURCE);
+        super(serviceProperties.getSoccerSubscriptionKey(), SOCCER_SCORES_JSON_VENUES);
     }
 
     @Override

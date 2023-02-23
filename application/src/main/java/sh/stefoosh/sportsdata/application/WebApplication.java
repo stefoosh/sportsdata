@@ -19,9 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
-import static sh.stefoosh.sportsdata.constants.Endpoints.NHL_STADIUM_RESOURCE;
-import static sh.stefoosh.sportsdata.constants.Endpoints.SOCCER_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoint.*;
 
 @EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
 @SpringBootApplication(scanBasePackages = {
@@ -47,17 +45,17 @@ public class WebApplication {
 		return "Hella Werld";
 	}
 
-	@GetMapping(MLB_STADIUM_RESOURCE)
+	@GetMapping(MLB_SCORES_JSON_STADIUMS)
 	public List<MlbStadium> mlbStadium(@RequestParam Integer id) {
 		return findStadiumVenue(MlbStadium.class, id);
 	}
 
-	@GetMapping(NHL_STADIUM_RESOURCE)
+	@GetMapping(NHL_SCORES_JSON_STADIUMS)
 	public List<NhlArena> nhlArena(@RequestParam Integer id) {
 		return findStadiumVenue(NhlArena.class, id);
 	}
 
-	@GetMapping(SOCCER_STADIUM_RESOURCE)
+	@GetMapping(SOCCER_SCORES_JSON_VENUES)
 	public List<SoccerVenue> soccerVenue(@RequestParam Integer id) {
 		return findStadiumVenue(SoccerVenue.class, id);
 	}

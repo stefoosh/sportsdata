@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import static sh.stefoosh.sportsdata.constants.JsonProperty.*;
+
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,28 +16,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class NhlArena implements StadiumVenue {
 
-//    @MongoId(FieldType.INT32)
-    @JsonProperty("StadiumID")
+    @JsonProperty(STADIUM_ID)
     private int id;
 
-    @JsonProperty("Name")
+    @JsonProperty(NAME)
     private String name;
 
-    @JsonProperty("City")
+    @JsonProperty(CITY)
     private String city;
 
-    @JsonProperty("State")
+    @JsonProperty(STATE)
     private String state;
 
-    @JsonProperty("Country")
+    @JsonProperty(COUNTRY)
     private String country;
 
-    @JsonProperty("GeoLat")
+    @JsonProperty(LATITUDE)
     private double latitude;
 
-    @JsonProperty("GeoLong")
+    @JsonProperty(LONGITUDE)
     private double longitude;
 
-    @JsonProperty("Capacity")
+    @JsonProperty(CAPACITY)
     private int capacity;
 }

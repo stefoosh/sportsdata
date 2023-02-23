@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.service.ServiceProperties;
 
-import static sh.stefoosh.sportsdata.constants.Endpoints.NHL_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_SCORES_JSON_STADIUMS;
 
 @Component
 public class NhlStadiumResource extends StadiumVenueResource {
 
     public NhlStadiumResource(ServiceProperties serviceProperties) {
-        super(serviceProperties.getNhlSubscriptionKey(), NHL_STADIUM_RESOURCE);
+        super(serviceProperties.getNhlSubscriptionKey(), NHL_SCORES_JSON_STADIUMS);
     }
 
     @Override

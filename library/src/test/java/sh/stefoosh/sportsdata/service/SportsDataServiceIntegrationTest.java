@@ -20,7 +20,7 @@ import sh.stefoosh.sportsdata.model.MlbStadium;
 import java.io.IOException;
 import java.util.List;
 
-import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
 
 @SpringBootTest
 @TestPropertySource(locations = "/application.properties")
@@ -74,6 +74,6 @@ public class SportsDataServiceIntegrationTest {
         Assertions.assertEquals(mlbStadiums.iterator().next(), mockMlbStadium);
         RecordedRequest recordedRequest = mockBackEnd.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
-        Assertions.assertEquals(MLB_STADIUM_RESOURCE, recordedRequest.getPath());
+        Assertions.assertEquals(MLB_SCORES_JSON_STADIUMS, recordedRequest.getPath());
     }
 }
