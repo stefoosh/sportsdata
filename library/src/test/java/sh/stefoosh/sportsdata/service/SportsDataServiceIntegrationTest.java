@@ -55,7 +55,7 @@ public class SportsDataServiceIntegrationTest {
     }
 
     @Test
-    void givenStadiumVenueResource_thenStream () throws JsonProcessingException, InterruptedException {
+    void givenMlbStadiumVenueResource_thenReturnList () throws JsonProcessingException, InterruptedException {
         MlbStadium mockMlbStadium = new MlbStadium(
                 22,
                 "SF",
