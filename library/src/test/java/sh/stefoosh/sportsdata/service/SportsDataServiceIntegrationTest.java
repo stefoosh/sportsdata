@@ -21,17 +21,18 @@ import java.io.IOException;
 import java.util.List;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
+import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
 
 @SpringBootTest
 @TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
-    @EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
+    @EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
     @SpringBootApplication
     static class TestConfiguration {
     }
 
-    public static MockWebServer mockBackEnd;
+    public static MockWebServer mockUpstream;
 
     @Autowired
     private SportsDataService sportsDataService;
@@ -39,18 +40,18 @@ public class SportsDataServiceIntegrationTest {
 
     @BeforeAll
     static void setUp() throws IOException {
-        mockBackEnd = new MockWebServer();
-        mockBackEnd.start();
+        mockUpstream = new MockWebServer();
+        mockUpstream.start();
     }
 
     @AfterAll
     static void tearDown() throws IOException {
-        mockBackEnd.shutdown();
+        mockUpstream.shutdown();
     }
 
     @BeforeEach
     void initialize() {
-        sportsDataService.setWebClientBaseUrl(String.format("http://localhost:%s", mockBackEnd.getPort()));
+        sportsDataService.setWebClientBaseUrl(String.format("http://localhost:%s", mockUpstream.getPort()));
     }
 
     @Test
@@ -65,14 +66,14 @@ public class SportsDataServiceIntegrationTest {
                 9.6,
                 10000
         );
-        mockBackEnd.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbStadium)))
+        mockUpstream.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbStadium)))
                 .addHeader("Content-Type", "application/json"));
 
         List<MlbStadium> mlbStadiums = sportsDataService.getMlbStadiums();
 
         Assertions.assertNotNull(mlbStadiums);
         Assertions.assertEquals(mlbStadiums.iterator().next(), mockMlbStadium);
-        RecordedRequest recordedRequest = mockBackEnd.takeRequest();
+        RecordedRequest recordedRequest = mockUpstream.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_SCORES_JSON_STADIUMS, recordedRequest.getPath());
     }

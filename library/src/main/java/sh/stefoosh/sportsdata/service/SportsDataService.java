@@ -40,7 +40,7 @@ public class SportsDataService {
         setWebClient(WebClient.builder().baseUrl(serviceProperties.getSportsDataApiBaseUrl()).build());
     }
 
-    public void setWebClientBaseUrl(String baseUrl) {
+    protected void setWebClientBaseUrl(String baseUrl) {
         setWebClient(WebClient.builder().baseUrl(baseUrl).build());
     }
 

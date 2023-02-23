@@ -19,9 +19,13 @@ import sh.stefoosh.sportsdata.service.SportsDataService;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
-@EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
-@SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
+import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA;
+import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
+
+@EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
+@SpringBootApplication(scanBasePackages = {SH_STEFOOSH_SPORTSDATA})
 public class Importer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
@@ -36,7 +40,7 @@ public class Importer {
 		SpringApplication.run(Importer.class, args);
 	}
 
-	private  <T extends StadiumVenue> void dispatchStadiumVenues(List<T> upstream) {
+	private <T extends StadiumVenue> void saveAllStadiumVenues(List<T> upstream) {
 		LOG.debug("{} objects fetched", upstream.size());
 		LOG.debug("{}", upstream);
 
@@ -50,14 +54,16 @@ public class Importer {
 		}
 	}
 
-	private void sportsDataProvingGround() {
+	private Stream<List<? extends StadiumVenue>> fetchUpstreamStadiumVenues() {
 		List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
 		List<NhlArena> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
 		List<SoccerVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
 
-		dispatchStadiumVenues(upstreamMlbStadiums);
-		dispatchStadiumVenues(upstreamNhlStadiums);
-		dispatchStadiumVenues(upstreamSoccerStadiums);
+		return Stream.of(upstreamMlbStadiums, upstreamNhlStadiums, upstreamSoccerStadiums);
+	}
+
+	private void sportsDataProvingGround() {
+		fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
 	}
 
 	private enum Arguments {

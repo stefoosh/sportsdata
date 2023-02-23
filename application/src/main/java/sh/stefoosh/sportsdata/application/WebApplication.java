@@ -20,12 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.*;
+import static sh.stefoosh.sportsdata.constants.Package.*;
 
-@EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
+@EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
 @SpringBootApplication(scanBasePackages = {
-		"sh.stefoosh.sportsdata.constants",
-		"sh.stefoosh.sportsdata.repository",
-		"sh.stefoosh.sportsdata.model",
+		SH_STEFOOSH_SPORTSDATA_CONSTANTS,
+		SH_STEFOOSH_SPORTSDATA_REPOSITORY,
+		SH_STEFOOSH_SPORTSDATA_MODEL,
 })
 @RestController
 public class WebApplication {
@@ -33,7 +34,7 @@ public class WebApplication {
 	private static final Logger LOG = LoggerFactory.getLogger(WebApplication.class);
 
 	@Autowired
-	public StadiumVenueRepository stadiumVenueRepository;
+	private StadiumVenueRepository stadiumVenueRepository;
 
 	public WebApplication(StadiumVenueRepository stadiumVenueRepository) {
 		this.stadiumVenueRepository = stadiumVenueRepository;
