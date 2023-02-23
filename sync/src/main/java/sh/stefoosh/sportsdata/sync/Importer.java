@@ -10,6 +10,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import sh.stefoosh.sportsdata.model.MlbStadium;
+import sh.stefoosh.sportsdata.model.NhlArena;
+import sh.stefoosh.sportsdata.model.SoccerVenue;
+import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 
@@ -33,11 +36,11 @@ public class Importer {
 		SpringApplication.run(Importer.class, args);
 	}
 
-	private void dispatchStadiumVenues(List<MlbStadium> upstream) {
+	private  <T extends StadiumVenue> void dispatchStadiumVenues(List<T> upstream) {
 		LOG.debug("{} objects fetched", upstream.size());
 		LOG.debug("{}", upstream);
 
-		List<MlbStadium> saveAllResult = stadiumVenueRepository.saveAll(upstream);
+		List<T> saveAllResult = stadiumVenueRepository.saveAll(upstream);
 		LOG.debug("{} documents saved", saveAllResult.size());
 		LOG.debug("{}", saveAllResult);
 
@@ -49,12 +52,12 @@ public class Importer {
 
 	private void sportsDataProvingGround() {
 		List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
-//		List<MlbStadium> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-//		List<MlbStadium> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
+		List<NhlArena> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
+		List<SoccerVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
 
 		dispatchStadiumVenues(upstreamMlbStadiums);
-//		dispatchStadiumVenues(upstreamNhlStadiums);
-//		dispatchStadiumVenues(upstreamSoccerStadiums, Sport.soccer);
+		dispatchStadiumVenues(upstreamNhlStadiums);
+		dispatchStadiumVenues(upstreamSoccerStadiums);
 	}
 
 	private enum Arguments {

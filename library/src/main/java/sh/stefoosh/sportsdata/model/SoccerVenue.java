@@ -12,9 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class NhlArena implements StadiumVenue {
+public class SoccerVenue implements StadiumVenue {
 
-//    @MongoId(FieldType.INT32)
+    //    @MongoId(FieldType.INT32)
     @JsonProperty("StadiumID")
     private int id;
 

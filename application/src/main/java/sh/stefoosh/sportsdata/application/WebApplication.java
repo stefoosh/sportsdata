@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sh.stefoosh.sportsdata.model.NhlArena;
+import sh.stefoosh.sportsdata.model.SoccerVenue;
+import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.util.Collections;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoints.NHL_STADIUM_RESOURCE;
+import static sh.stefoosh.sportsdata.constants.Endpoints.SOCCER_STADIUM_RESOURCE;
 
 @EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
 @SpringBootApplication(scanBasePackages = {
@@ -38,17 +43,28 @@ public class WebApplication {
 
 	@GetMapping("/")
 	public String root() {
+		// TODO: log request parameters and response
 		return "Hella Werld";
 	}
 
 	@GetMapping(MLB_STADIUM_RESOURCE)
 	public List<MlbStadium> mlbStadium(@RequestParam Integer id) {
-		// TODO: log this in a filter along with request parameters and response
-		LOG.debug(MLB_STADIUM_RESOURCE);
-		LOG.debug(MlbStadium.class.getName());
+		return findStadiumVenue(MlbStadium.class, id);
+	}
 
-		Optional<MlbStadium> mlbStadium = stadiumVenueRepository.findByClassAndId(MlbStadium.class.getName(), id);
-		return mlbStadium.map(List::of).orElse(Collections.emptyList());
+	@GetMapping(NHL_STADIUM_RESOURCE)
+	public List<NhlArena> nhlArena(@RequestParam Integer id) {
+		return findStadiumVenue(NhlArena.class, id);
+	}
+
+	@GetMapping(SOCCER_STADIUM_RESOURCE)
+	public List<SoccerVenue> soccerVenue(@RequestParam Integer id) {
+		return findStadiumVenue(SoccerVenue.class, id);
+	}
+
+	private <T extends StadiumVenue> List<T> findStadiumVenue(Class<T> cls, Integer id) {
+		Optional<T> stadiumVenue = stadiumVenueRepository.findByClassAndId(cls.getName(), id);
+		return stadiumVenue.map(List::of).orElse(Collections.emptyList());
 
 //		return id.map(integer -> mlbStadiumRepository.findByIdAndClass(integer, MlbStadium.class.getName())
 //				.map(List::of)
