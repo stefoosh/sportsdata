@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import sh.stefoosh.sportsdata.model.MlbStadium;
-import sh.stefoosh.sportsdata.repository.MlbStadiumRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
 
-@EnableMongoRepositories(basePackageClasses = MlbStadiumRepository.class)
+@EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
 @SpringBootApplication(scanBasePackages = {
 		"sh.stefoosh.sportsdata.constants",
 		"sh.stefoosh.sportsdata.repository",
@@ -30,10 +30,10 @@ public class WebApplication {
 	private static final Logger LOG = LoggerFactory.getLogger(WebApplication.class);
 
 	@Autowired
-	public MlbStadiumRepository mlbStadiumRepository;
+	public StadiumVenueRepository stadiumVenueRepository;
 
-	public WebApplication(MlbStadiumRepository mlbStadiumRepository) {
-		this.mlbStadiumRepository = mlbStadiumRepository;
+	public WebApplication(StadiumVenueRepository stadiumVenueRepository) {
+		this.stadiumVenueRepository = stadiumVenueRepository;
 	}
 
 	@GetMapping("/")
@@ -42,14 +42,18 @@ public class WebApplication {
 	}
 
 	@GetMapping(MLB_STADIUM_RESOURCE)
-	public List<MlbStadium> mlbStadiums(@RequestParam(required = false) Optional<Integer> id) {
+	public List<MlbStadium> mlbStadium(@RequestParam Integer id) {
 		// TODO: log this in a filter along with request parameters and response
 		LOG.debug(MLB_STADIUM_RESOURCE);
+		LOG.debug(MlbStadium.class.getName());
 
-		return id.map(integer -> mlbStadiumRepository.findById(integer)
-				.map(List::of)
-				.orElse(Collections.emptyList()))
-				.orElseGet(() -> mlbStadiumRepository.findAll());
+		Optional<MlbStadium> mlbStadium = stadiumVenueRepository.findByClassAndId(MlbStadium.class.getName(), id);
+		return mlbStadium.map(List::of).orElse(Collections.emptyList());
+
+//		return id.map(integer -> mlbStadiumRepository.findByIdAndClass(integer, MlbStadium.class.getName())
+//				.map(List::of)
+//				.orElse(Collections.emptyList()))
+//				.orElseGet(() -> mlbStadiumRepository.findAll());
 	}
 
 	public static void main(String[] args) {

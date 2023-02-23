@@ -10,21 +10,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import sh.stefoosh.sportsdata.model.MlbStadium;
-import sh.stefoosh.sportsdata.repository.MlbStadiumRepository;
+import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 
 
 import java.util.List;
 import java.util.Arrays;
 
-@EnableMongoRepositories(basePackageClasses = MlbStadiumRepository.class)
+@EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
 @SpringBootApplication(scanBasePackages = {"sh.stefoosh.sportsdata"})
 public class Importer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
 
 	@Autowired
-	private MlbStadiumRepository mlbStadiumRepository;
+	private StadiumVenueRepository stadiumVenueRepository;
 
 	@Autowired
 	private SportsDataService sportsDataService;
@@ -37,7 +37,7 @@ public class Importer {
 		LOG.debug("{} objects fetched", upstream.size());
 		LOG.debug("{}", upstream);
 
-		List<MlbStadium> saveAllResult = mlbStadiumRepository.saveAll(upstream);
+		List<MlbStadium> saveAllResult = stadiumVenueRepository.saveAll(upstream);
 		LOG.debug("{} documents saved", saveAllResult.size());
 		LOG.debug("{}", saveAllResult);
 

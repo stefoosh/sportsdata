@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.TestPropertySource;
 import sh.stefoosh.sportsdata.model.MlbStadium;
-import sh.stefoosh.sportsdata.repository.MlbStadiumRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +26,7 @@ import static sh.stefoosh.sportsdata.constants.Endpoints.MLB_STADIUM_RESOURCE;
 @TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
-    @EnableMongoRepositories(basePackageClasses = MlbStadiumRepository.class)
+    @EnableMongoRepositories(basePackages = "sh.stefoosh.sportsdata.repository")
     @SpringBootApplication
     static class TestConfiguration {
     }
