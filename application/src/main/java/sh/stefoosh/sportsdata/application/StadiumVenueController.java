@@ -2,7 +2,7 @@ package sh.stefoosh.sportsdata.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestParam;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import org.springframework.boot.SpringApplication;
@@ -21,14 +21,14 @@ import java.util.stream.Stream;
 import static sh.stefoosh.sportsdata.constants.Endpoint.*;
 import static sh.stefoosh.sportsdata.constants.Package.*;
 
+@Configuration
 @EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
-@SpringBootApplication(scanBasePackages = {
-		SH_STEFOOSH_SPORTSDATA_CONSTANTS,
-		SH_STEFOOSH_SPORTSDATA_REPOSITORY,
-		SH_STEFOOSH_SPORTSDATA_MODEL,
-})
-@RestController
-public class WebApplication {
+//@SpringBootApplication(scanBasePackages = {
+//		SH_STEFOOSH_SPORTSDATA_CONSTANTS,
+//		SH_STEFOOSH_SPORTSDATA_REPOSITORY,
+//		SH_STEFOOSH_SPORTSDATA_MODEL,
+//})
+@RestController public class WebApplication {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebApplication.class);
 
@@ -36,12 +36,6 @@ public class WebApplication {
 
 	public WebApplication(StadiumVenueRepository stadiumVenueRepository) {
 		this.stadiumVenueRepository = stadiumVenueRepository;
-	}
-
-	@GetMapping("/")
-	public String root() {
-		// TODO: log request parameters and response
-		return "Hella Werld";
 	}
 
 	@GetMapping(MLB_SCORES_JSON_STADIUMS)
@@ -65,9 +59,5 @@ public class WebApplication {
 		return id.isPresent() ?
 				stadiumVenueRepository.findByClassNameAndId(cls.getName(), id.get()) :
 				stadiumVenueRepository.findByClassName(cls.getName());
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(WebApplication.class, args);
 	}
 }
