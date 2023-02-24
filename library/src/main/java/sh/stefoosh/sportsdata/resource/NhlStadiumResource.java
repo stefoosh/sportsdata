@@ -1,12 +1,10 @@
 package sh.stefoosh.sportsdata.resource;
 
-import org.springframework.stereotype.Component;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.service.ServiceProperties;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_SCORES_JSON_STADIUMS;
 
-@Component
 public class NhlStadiumResource extends StadiumVenueResource {
 
     public NhlStadiumResource(ServiceProperties serviceProperties) {
