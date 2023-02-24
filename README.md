@@ -10,6 +10,7 @@ Based on:
 
 Featuring:
 - Backend client service calls with Spring Framework 5 WebClient
+- Testcontainers beneath controller unit tests
 
 #
 Run unit and integration tests on all subprojects
@@ -23,6 +24,10 @@ Import sportsdata into MongoDB
 Start the web application
 ```shell
 ./gradlew :application:bootRun
+```
+Build and run jar
+```shell
+./gradlew clean bootJar && java -server -jar ./application/build/libs/application.jar
 ```
 
 Secrets and constants go into `resources/application.properties` on a per-subproject basis.
