@@ -15,9 +15,8 @@ import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.*;
 import static sh.stefoosh.sportsdata.constants.Package.*;
@@ -33,7 +32,6 @@ public class WebApplication {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebApplication.class);
 
-	@Autowired
 	private StadiumVenueRepository stadiumVenueRepository;
 
 	public WebApplication(StadiumVenueRepository stadiumVenueRepository) {
@@ -47,28 +45,26 @@ public class WebApplication {
 	}
 
 	@GetMapping(MLB_SCORES_JSON_STADIUMS)
-	public List<MlbStadium> mlbStadium(@RequestParam Integer id) {
+	public Stream mlbStadium(@RequestParam(required = false) Optional<Integer> id) {
+
+		LOG.debug(String.valueOf(id));
 		return findStadiumVenue(MlbStadium.class, id);
 	}
 
 	@GetMapping(NHL_SCORES_JSON_STADIUMS)
-	public List<NhlArena> nhlArena(@RequestParam Integer id) {
+	public Stream nhlArena(@RequestParam(required = false) Optional<Integer> id) {
 		return findStadiumVenue(NhlArena.class, id);
 	}
 
 	@GetMapping(SOCCER_SCORES_JSON_VENUES)
-	public List<SoccerVenue> soccerVenue(@RequestParam Integer id) {
+	public Stream soccerVenue(@RequestParam(required = false) Optional<Integer> id) {
 		return findStadiumVenue(SoccerVenue.class, id);
 	}
 
-	private <T extends StadiumVenue> List<T> findStadiumVenue(Class<T> cls, Integer id) {
-		Optional<T> stadiumVenue = stadiumVenueRepository.findByClassAndId(cls.getName(), id);
-		return stadiumVenue.map(List::of).orElse(Collections.emptyList());
-
-//		return id.map(integer -> mlbStadiumRepository.findByIdAndClass(integer, MlbStadium.class.getName())
-//				.map(List::of)
-//				.orElse(Collections.emptyList()))
-//				.orElseGet(() -> mlbStadiumRepository.findAll());
+	private <T extends StadiumVenue> Stream findStadiumVenue(Class<T> cls, Optional<Integer> id) {
+		return id.isPresent() ?
+				stadiumVenueRepository.findByClassNameAndId(cls.getName(), id.get()) :
+				stadiumVenueRepository.findByClassName(cls.getName());
 	}
 
 	public static void main(String[] args) {
