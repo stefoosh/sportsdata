@@ -16,6 +16,8 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import sh.stefoosh.sportsdata.model.MlbStadium;
+import sh.stefoosh.sportsdata.model.NhlArena;
+import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.util.List;
@@ -27,8 +29,8 @@ import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_WE
 @Testcontainers
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
-public class StadiumVenueControllerTest {
-    private static final Logger LOG = LoggerFactory.getLogger(StadiumVenueControllerTest.class);
+public class StadiumVenueControllerUnitTest {
+    private static final Logger LOG = LoggerFactory.getLogger(StadiumVenueControllerUnitTest.class);
 
     @Container
     static MongoDBContainer mongoDBContainer = MongoContainers.getDefaultContainer();
@@ -50,7 +52,7 @@ public class StadiumVenueControllerTest {
     }
 
     @Test
-    void givenMlbStadium_repoShouldReturnSameMlbStadium() {
+    void givenOneMlbStadium_shouldReturnSameMlbStadium() {
         MlbStadium exptectedMlbStadium = new MlbStadium(
                 22,
                 "SF",
@@ -68,5 +70,44 @@ public class StadiumVenueControllerTest {
         Assertions.assertEquals(1, controllerResponse.size());
         Assertions.assertEquals(22, controllerResponse.get(0).getId());
         Assertions.assertEquals(exptectedMlbStadium, controllerResponse.get(0));
+    }
+
+    @Test
+    void givenNoNhlArenas_shouldReturnAllNhlArenas() {
+        NhlArena expectedArenaOne = new NhlArena(
+                1,
+                "Selland",
+                "Fresno",
+                "CenCal",
+                "USandA",
+                55.9,
+                5.59,
+                999
+        );
+        NhlArena expectedArenaTwo = new NhlArena(
+                2,
+                "SaveMart",
+                "Clovis",
+                "CenCal",
+                "USandA",
+                5.9,
+                5.5,
+                9999
+        );
+        this.stadiumVenueRepository.saveAll(List.of(expectedArenaOne, expectedArenaTwo));
+        Optional<Integer> optionalZeroInvokesShortCircuit = Optional.of(0);
+
+        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(optionalZeroInvokesShortCircuit);
+
+        Assertions.assertEquals(2, controllerResponse.size());
+    }
+
+    @Test
+    void givenSoccerIdNotInDb_shouldReturnEmptyList() {
+        Optional<Integer> optionalIdNotInDb = Optional.of(-1);
+
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
+
+        Assertions.assertEquals(0, controllerResponse.size());
     }
 }

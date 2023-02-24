@@ -43,8 +43,8 @@ import static sh.stefoosh.sportsdata.constants.Package.*;
 	}
 
 	private <T extends StadiumVenue> List<T> findStadiumVenue(Class<T> cls, Optional<Integer> id) {
-		return id.isPresent() ?
-				stadiumVenueRepository.findByClassNameAndId(cls.getName(), id.get()) :
-				stadiumVenueRepository.findByClassName(cls.getName());
+		return id.isEmpty() || id.isPresent() && id.get() == 0 ?
+				stadiumVenueRepository.findByClassName(cls.getName()) :
+				stadiumVenueRepository.findByClassNameAndId(cls.getName(), id.get());
 	}
 }
