@@ -23,9 +23,12 @@ import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_WEB;
+import static sh.stefoosh.sportsdata.constants.Package.*;
 
-@ComponentScan({SH_STEFOOSH_SPORTSDATA_WEB})
+@ComponentScan({
+        SH_STEFOOSH_SPORTSDATA_WEB,
+        SH_STEFOOSH_SPORTSDATA_REPOSITORY
+})
 @Testcontainers
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
