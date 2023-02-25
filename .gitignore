@@ -32,4 +32,7 @@ build/
 .gradle/
 
 .DS_Store
+
+# IntelliJ
 .idea/
+*.iml
