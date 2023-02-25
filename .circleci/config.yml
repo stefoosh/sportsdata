@@ -34,25 +34,7 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: pwd
-      - run: ls -latrh
-      - run: mkdir -p ./application/src/main/resources
-      - run: echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
-      - run: echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
-      - run: echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
-      - run: echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
-      - run: mkdir -p ./library/src/test/resources
-# TODO: mock config in tests or decouple upstream service from library into its own submodule
-      - run: echo "service.apiAuthHeaderKey=foo" >> ./library/src/test/resources/application.properties
-      - run: echo "service.sportsDataApiBaseUrl=http://fakeApi" >> ./library/src/test/resources/application.properties
-      - run: echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
-      - run: echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
-      - run: echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
-      - run: find . -name application.properties
-      - run: cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
-      - run: echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
-      - run: echo "spring.data.mongodb.database=fakeDb" >> ./sync/src/main/resources/application.properties
-      - run: echo "spring.data.mongodb.uri=mongodb://u:p@h:1/db" >> ./sync/src/main/resources/application.properties
+      - run: ./docker/setup_app_props.sh
       - run: ./gradlew clean test
       - run: ./gradlew clean build
       - run: ./gradlew clean bootJar
