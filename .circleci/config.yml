@@ -35,11 +35,19 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
+      - run: echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
+      - run: echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
+      - run: echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
+      - run: echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
+      - run: echo "service.apiAuthHeaderKey=foo" >> ./library/src/test/resources/application.properties
+      - run: echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
+      - run: echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
+      - run: echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
+#      - run: cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
+#      - run: echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
       - run: ./gradlew clean test
       - run: ./gradlew clean build
       - run: ./gradlew clean bootJar
-      - run: echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
-      - run: echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
       - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
       - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
       - run: docker image push stefoosh/sportsdata:latest
