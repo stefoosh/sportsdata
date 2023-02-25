@@ -29,7 +29,11 @@ Build and run web app jar
 ```shell
 ./gradlew clean bootJar && java -server -jar ./application/build/libs/application.jar
 ```
-
+Build Docker images
+```shell
+./gradlew clean test build bootJar
+DOCKER_BUILDKIT=0 docker build . -f docker/Dockerfile --platform linux/x86_64/v8
+```
 Secrets and constants go into `src/{main,test}/resources/application.properties` on a per-subproject basis.
 They're defined in `.gitignore` and not included in this repo.
 

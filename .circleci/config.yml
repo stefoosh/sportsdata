@@ -7,11 +7,12 @@ workflows:
       - gradle-app:
           context:
             - dockerhub
+            - sportsdata
 
 jobs:
   gradle-app:
     docker:
-      - image: cimg/openjdk:117.0.6
+      - image: cimg/openjdk:17.0.6
 
     working_directory: ~/sportsdata
 
@@ -34,6 +35,8 @@ jobs:
       - run: ./gradlew clean test
       - run: ./gradlew clean build
       - run: ./gradlew clean bootJar
+      - run: echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
+      - run: echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
       - setup_remote_docker:
           version: 20.10.18
       - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
