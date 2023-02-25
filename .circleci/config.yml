@@ -42,7 +42,9 @@ jobs:
       - run: echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
       - run: echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
       - run: mkdir -p ./library/src/test/resources
+# TODO: mock config in tests or decouple upstream service from library into its own submodule
       - run: echo "service.apiAuthHeaderKey=foo" >> ./library/src/test/resources/application.properties
+      - run: echo "service.sportsDataApiBaseUrl=http://fakeApi" >> ./library/src/test/resources/application.properties
       - run: echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
       - run: echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
       - run: echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
