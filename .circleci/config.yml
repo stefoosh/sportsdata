@@ -1,0 +1,41 @@
+version: 2
+
+workflows:
+  version: 2
+  build-app-and-image:
+    jobs:
+      - gradle-app:
+          context:
+            - dockerhub
+
+jobs:
+  gradle-app:
+    docker:
+      - image: cimg/openjdk:117.0.6
+
+    working_directory: ~/sportsdata
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: ./gradlew dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - run: ./gradlew clean test
+      - run: ./gradlew clean build
+      - run: ./gradlew clean bootJar
+      - setup_remote_docker:
+          version: 20.10.18
+      - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
+      - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+      - run: docker image push stefoosh/sportsdata:latest

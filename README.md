@@ -25,11 +25,11 @@ Start the web application
 ```shell
 ./gradlew :application:bootRun
 ```
-Build and run jar
+Build and run web app jar
 ```shell
 ./gradlew clean bootJar && java -server -jar ./application/build/libs/application.jar
 ```
 
-Secrets and constants go into `resources/application.properties` on a per-subproject basis.
+Secrets and constants go into `src/{main,test}/resources/application.properties` on a per-subproject basis.
 They're defined in `.gitignore` and not included in this repo.
 
