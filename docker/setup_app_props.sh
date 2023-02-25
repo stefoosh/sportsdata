@@ -5,6 +5,11 @@ ls -latrh
 mkdir -p ./application/src/main/resources
 echo
 
+echo SPRING_DATA_MONGODB_DATABASE
+echo "${SPRING_DATA_MONGODB_DATABASE}" | wc -c
+echo SPRING_DATA_MONGODB_URI
+echo "${SPRING_DATA_MONGODB_URI}" | wc -c
+
 echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> ./application/src/main/resources/application.properties
