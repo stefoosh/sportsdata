@@ -1,6 +1,7 @@
 package sh.stefoosh.sportsdata.constants;
 
 final public class JsonProperty {
+    public static final String VENUE_ID = "VenueId";
     public static final String STADIUM_ID = "StadiumID";
     public static final String NAME = "Name";
     public static final String CITY = "City";

@@ -68,7 +68,7 @@ public class StadiumVenueControllerUnitTest {
         List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadiums(Optional.of(22));
 
         Assertions.assertEquals(1, controllerResponse.size());
-        Assertions.assertEquals(22, controllerResponse.get(0).getId());
+        Assertions.assertEquals(22, controllerResponse.get(0).getStadiumId());
         Assertions.assertEquals(exptectedMlbStadium, controllerResponse.get(0));
     }
 

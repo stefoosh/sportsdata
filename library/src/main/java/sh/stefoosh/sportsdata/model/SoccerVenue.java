@@ -16,8 +16,8 @@ import static sh.stefoosh.sportsdata.constants.JsonProperty.*;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class SoccerVenue implements StadiumVenue {
 
-    @JsonProperty(STADIUM_ID)
-    private int stadiumId;
+    @JsonProperty(VENUE_ID)
+    private int venueId;
 
     @JsonProperty(NAME)
     private String name;
