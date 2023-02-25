@@ -48,8 +48,11 @@ jobs:
       - run: echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
       - run: echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
       - run: echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
-#      - run: cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
-#      - run: echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
+      - run: find . -name application.properties
+      - run: cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
+      - run: echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
+      - run: echo "spring.data.mongodb.database=fakeDb" >> ./sync/src/main/resources/application.properties
+      - run: echo "spring.data.mongodb.uri=mongodb://u:p@h:1/db" >> ./sync/src/main/resources/application.properties
       - run: ./gradlew clean test
       - run: ./gradlew clean build
       - run: ./gradlew clean bootJar
