@@ -13,7 +13,8 @@ echo "${SPRING_DATA_MONGODB_URI}" | wc -c
 echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> ./application/src/main/resources/application.properties
-echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
+#echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
+echo "spring.data.mongodb.database=fakeProd" >> ./application/src/main/resources/application.properties
 echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
 ls -latrh ./application/src/main/resources/application.properties
 cat ./application/src/main/resources/application.properties
@@ -34,8 +35,6 @@ echo
 mkdir -p ./sync/src/main/resources
 cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
 echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
-echo "spring.data.mongodb.database=fakeDb" >> ./sync/src/main/resources/application.properties
-echo "spring.data.mongodb.uri=mongodb://fakeUri" >> ./sync/src/main/resources/application.properties
 ls -latrh ./sync/src/main/resources/application.properties
 cat ./sync/src/main/resources/application.properties
 echo
