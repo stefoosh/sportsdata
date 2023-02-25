@@ -17,7 +17,7 @@ import static sh.stefoosh.sportsdata.constants.JsonProperty.*;
 public class SoccerVenue implements StadiumVenue {
 
     @JsonProperty(STADIUM_ID)
-    private int id;
+    private int stadiumId;
 
     @JsonProperty(NAME)
     private String name;

@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
@@ -35,13 +36,25 @@ public class SportsDataService {
     @Getter(AccessLevel.PRIVATE)
     private WebClient webClient;
 
+    static final int MAX_IN_MEMORY_SIZE = 5 * 1024 * 1024;
+    final ExchangeStrategies strategies = ExchangeStrategies.builder()
+            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(MAX_IN_MEMORY_SIZE))
+            .build();
+
     public SportsDataService(ServiceProperties serviceProperties) {
         this.serviceProperties = serviceProperties;
-        setWebClient(WebClient.builder().baseUrl(serviceProperties.getSportsDataApiBaseUrl()).build());
+        setWebClient(WebClient.builder()
+                .baseUrl(serviceProperties.getSportsDataApiBaseUrl())
+                .exchangeStrategies(strategies)
+                .build());
+
     }
 
     protected void setWebClientBaseUrl(String baseUrl) {
-        setWebClient(WebClient.builder().baseUrl(baseUrl).build());
+        setWebClient(WebClient.builder()
+                .baseUrl(baseUrl)
+                .exchangeStrategies(strategies)
+                .build());
     }
 
     public List<MlbStadium> getMlbStadiums() {
