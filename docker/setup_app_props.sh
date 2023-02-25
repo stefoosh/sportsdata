@@ -20,8 +20,8 @@ echo "service.sportsDataApiBaseUrl=http://fakeApi" >> ./library/src/test/resourc
 echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
 echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
 echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
-echo "spring.data.mongodb.database=fakeDb" >> ./library/src/main/resources/application.properties
-echo "spring.data.mongodb.uri=mongodb://fakeUri" >> ./library/src/main/resources/application.properties
+echo "spring.data.mongodb.database=fakeDb" >> ./library/src/test/resources/application.properties
+echo "spring.data.mongodb.uri=mongodb://fakeUri" >> ./library/src/test/resources/application.properties
 ls -latrh ./library/src/test/resources/application.properties
 cat ./library/src/test/resources/application.properties
 
