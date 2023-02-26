@@ -11,8 +11,6 @@ workflows:
 
 jobs:
   gradle-app:
-#    docker:
-#      - image: cimg/openjdk:17.0.6
     machine:
       image: ubuntu-2204:2023.02.1
     environment:
@@ -23,9 +21,6 @@ jobs:
 
     steps:
       - checkout
-#      - setup_remote_docker:
-#          version: 20.10.18
-#          docker_layer_caching: true
 
       - restore_cache:
           keys:
@@ -42,8 +37,8 @@ jobs:
       - run: ./docker/setup_app_props.sh
 #      - run: ./gradlew test
       - run: ./gradlew build
+      - run: find . -name application.properties | xargs ls -latrh
       - run: ./gradlew bootJar
-      - run: find . -name application.properties
       - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
 #      - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 #      - run: docker image push stefoosh/sportsdata:latest

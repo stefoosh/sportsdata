@@ -22,7 +22,6 @@ import java.util.List;
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
 
 @SpringBootTest
-//@TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
     @SpringBootApplication

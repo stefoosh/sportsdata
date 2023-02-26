@@ -76,42 +76,42 @@ public class StadiumVenueControllerUnitTest {
         Assertions.assertEquals(exptectedMlbStadium, controllerResponse.get(0));
     }
 
-//    @Test
-//    void givenNoNhlArenas_shouldReturnAllNhlArenas() {
-//        NhlArena expectedArenaOne = new NhlArena(
-//                1,
-//                "Selland",
-//                "Fresno",
-//                "CenCal",
-//                "USandA",
-//                55.9,
-//                5.59,
-//                999
-//        );
-//        NhlArena expectedArenaTwo = new NhlArena(
-//                2,
-//                "SaveMart",
-//                "Clovis",
-//                "CenCal",
-//                "USandA",
-//                5.9,
-//                5.5,
-//                9999
-//        );
-//        this.stadiumVenueRepository.saveAll(List.of(expectedArenaOne, expectedArenaTwo));
-//        Optional<Integer> optionalZeroInvokesShortCircuit = Optional.of(0);
-//
-//        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(optionalZeroInvokesShortCircuit);
-//
-//        Assertions.assertEquals(2, controllerResponse.size());
-//    }
-//
-//    @Test
-//    void givenSoccerIdNotInDb_shouldReturnEmptyList() {
-//        Optional<Integer> optionalIdNotInDb = Optional.of(-1);
-//
-//        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
-//
-//        Assertions.assertEquals(0, controllerResponse.size());
-//    }
+    @Test
+    void givenNoNhlArenas_shouldReturnAllNhlArenas() {
+        NhlArena expectedArenaOne = new NhlArena(
+                1,
+                "Selland",
+                "Fresno",
+                "CenCal",
+                "USandA",
+                55.9,
+                5.59,
+                999
+        );
+        NhlArena expectedArenaTwo = new NhlArena(
+                2,
+                "SaveMart",
+                "Clovis",
+                "CenCal",
+                "USandA",
+                5.9,
+                5.5,
+                9999
+        );
+        this.stadiumVenueRepository.saveAll(List.of(expectedArenaOne, expectedArenaTwo));
+        Optional<Integer> optionalZeroInvokesShortCircuit = Optional.of(0);
+
+        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(optionalZeroInvokesShortCircuit);
+
+        Assertions.assertEquals(2, controllerResponse.size());
+    }
+
+    @Test
+    void givenSoccerIdNotInDb_shouldReturnEmptyList() {
+        Optional<Integer> optionalIdNotInDb = Optional.of(-1);
+
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
+
+        Assertions.assertEquals(0, controllerResponse.size());
+    }
 }
