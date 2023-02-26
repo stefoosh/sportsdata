@@ -18,7 +18,7 @@ APP_PROPS="./application/src/main/resources/application.properties"
 LIB_PROPS="./library/src/main/resources/application.properties"
 SYNC_PROP="./sync/src/main/resources/application.properties"
 
-echo "org.testcontainers" >> "${APP_PROPS}"
+echo "org.testcontainers=DEBUG" >> "${APP_PROPS}"
 echo "logging.level.org.springframework.data.mongodb=DEBUG" >> "${APP_PROPS}"
 echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> "${APP_PROPS}"
 echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> "${APP_PROPS}"
@@ -28,6 +28,7 @@ ls -latrh "${APP_PROPS}"
 cat "${APP_PROPS}"
 
 echo
+echo "org.testcontainers=DEBUG" >> "${LIB_PROPS}"
 echo "service.apiAuthHeaderKey=foo" >> "${LIB_PROPS}"
 echo "service.sportsDataApiBaseUrl=http://fakeApi" >> "${LIB_PROPS}"
 echo "service.mlbSubscriptionKey=asdf" >> "${LIB_PROPS}"
@@ -40,6 +41,7 @@ cat "${LIB_PROPS}"
 
 echo
 cp "${LIB_PROPS}" "${SYNC_PROP}"
+echo "org.testcontainers=DEBUG" >> "${SYNC_PROP}"
 echo "spring.main.web-application-type=none" >> "${SYNC_PROP}"
 ls -latrh > "${SYNC_PROP}"
 cat > "${SYNC_PROP}"
