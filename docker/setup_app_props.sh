@@ -15,7 +15,7 @@ echo SPRING_DATA_MONGODB_URI
 echo "${SPRING_DATA_MONGODB_URI}" | wc -c
 
 APP_PROPS="./application/src/main/resources/application.properties"
-LIB_PROPS="./library/src/main/resources/application.properties"
+LIB_PROPS="./library/src/test/resources/application.properties"
 SYNC_PROP="./sync/src/main/resources/application.properties"
 
 echo "org.testcontainers=DEBUG" >> "${APP_PROPS}"
@@ -34,8 +34,8 @@ echo "service.sportsDataApiBaseUrl=http://fakeApi" >> "${LIB_PROPS}"
 echo "service.mlbSubscriptionKey=asdf" >> "${LIB_PROPS}"
 echo "service.nhlSubscriptionKey=qwerty" >> "${LIB_PROPS}"
 echo "service.soccerSubscriptionKey=1234" >> "${LIB_PROPS}"
-echo "spring.data.mongodb.database=fakeDb" >> "${LIB_PROPS}"
-echo "spring.data.mongodb.uri=mongodb://fakeUri" >> "${LIB_PROPS}"
+#echo "spring.data.mongodb.database=fakeDb" >> "${LIB_PROPS}"
+#echo "spring.data.mongodb.uri=mongodb://fakeUri" >> "${LIB_PROPS}"
 ls -latrh "${LIB_PROPS}"
 cat "${LIB_PROPS}"
 
