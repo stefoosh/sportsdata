@@ -25,7 +25,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-{{ checksum "./application/build.gradle" }}-{{ checksum "./library/build.gradle" }}-{{ checksum "./sync/build.gradle" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
