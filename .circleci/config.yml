@@ -15,6 +15,9 @@ jobs:
 #      - image: cimg/openjdk:17.0.6
     machine:
       image: ubuntu-2204:2023.02.1
+    environment:
+      architecture: "amd64"
+      platform: "linux/amd64"
 
     working_directory: ~/sportsdata
 
