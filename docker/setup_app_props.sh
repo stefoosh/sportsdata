@@ -13,8 +13,7 @@ echo "${SPRING_DATA_MONGODB_URI}" | wc -c
 echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
 echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> ./application/src/main/resources/application.properties
-#echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
-echo "spring.data.mongodb.database=fakeProd" >> ./application/src/main/resources/application.properties
+echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
 echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
 ls -latrh ./application/src/main/resources/application.properties
 cat ./application/src/main/resources/application.properties
