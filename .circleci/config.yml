@@ -34,7 +34,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "./application/build.gradle" }}-{{ checksum "./library/build.gradle" }}-{{ checksum "./sync/build.gradle" }}
       - run: ./docker/setup_app_props.sh
       - run: ./gradlew test
       - run: ./gradlew build
