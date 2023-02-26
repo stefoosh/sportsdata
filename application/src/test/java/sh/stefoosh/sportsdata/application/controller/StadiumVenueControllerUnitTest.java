@@ -21,7 +21,6 @@ import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static sh.stefoosh.sportsdata.constants.Package.*;
 
@@ -68,7 +67,7 @@ public class StadiumVenueControllerUnitTest {
         );
         this.stadiumVenueRepository.save(exptectedMlbStadium);
 
-        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadiums(22);
+        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadium(22);
 
         Assertions.assertEquals(1, controllerResponse.size());
         Assertions.assertEquals(22, controllerResponse.get(0).getStadiumId());
@@ -99,7 +98,7 @@ public class StadiumVenueControllerUnitTest {
         );
         this.stadiumVenueRepository.saveAll(List.of(expectedArenaOne, expectedArenaTwo));
 
-        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(0);
+        List<NhlArena> controllerResponse = stadiumVenueController.nhlArena(0);
 
         Assertions.assertEquals(2, controllerResponse.size());
     }
@@ -108,7 +107,7 @@ public class StadiumVenueControllerUnitTest {
     void givenSoccerIdNotInDb_shouldReturnEmptyList() {
         int idNotInDb = -1;
 
-        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(idNotInDb);
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenue(idNotInDb);
 
         Assertions.assertEquals(0, controllerResponse.size());
     }
@@ -128,7 +127,7 @@ public class StadiumVenueControllerUnitTest {
         );
         this.stadiumVenueRepository.save(expectedStadium);
 
-        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(expectedId);
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenue(expectedId);
 
         Assertions.assertEquals(1, controllerResponse.size());
         Assertions.assertEquals(expectedId, controllerResponse.get(0).getVenueId());
