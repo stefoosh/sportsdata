@@ -34,6 +34,10 @@ Build Docker images
 ./gradlew clean test build bootJar
 DOCKER_BUILDKIT=0 docker build . -f docker/Dockerfile --platform linux/x86_64/v8
 ```
+Running the prod image
+```shell
+docker run -p 8080:8080 --platform linux/amd64 stefoosh/sportsdata:latest
+```
+
 Secrets and constants go into `src/{main,test}/resources/application.properties` on a per-subproject basis.
 They're defined in `.gitignore` and not included in this repo.
-

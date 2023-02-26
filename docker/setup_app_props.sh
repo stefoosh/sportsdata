@@ -18,6 +18,9 @@ echo "${SPRING_DATA_MONGODB_URI}" | base64
 APP_PROPS="./application/src/main/resources/application.properties"
 SYNC_PROP="./sync/src/main/resources/application.properties"
 
+echo "logging.level.org.springframework.data.mongodb=DEBUG" >> "${APP_PROPS}"
+echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> "${APP_PROPS}"
+echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> "${APP_PROPS}"
 echo "spring.data.mongodb.database=${SPRING_DATA_MONGODB_DATABASE}" >> "${APP_PROPS}"
 echo "spring.data.mongodb.uri=${SPRING_DATA_MONGODB_URI}" >> "${APP_PROPS}"
 
