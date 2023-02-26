@@ -36,9 +36,9 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: ./docker/setup_app_props.sh
-      - run: ./gradlew clean test
-      - run: ./gradlew clean build
-      - run: ./gradlew clean bootJar
+      - run: ./gradlew test
+      - run: ./gradlew build
+      - run: ./gradlew bootJar
       - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
 #      - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
 #      - run: docker image push stefoosh/sportsdata:latest
