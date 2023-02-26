@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+java -version
+
 pwd
 ls -latrh
 mkdir -p ./application/src/main/resources
+mkdir -p ./library/src/test/resources
+mkdir -p ./sync/src/main/resources
 echo
 
 echo SPRING_DATA_MONGODB_DATABASE
@@ -10,32 +14,35 @@ echo "${SPRING_DATA_MONGODB_DATABASE}" | wc -c
 echo SPRING_DATA_MONGODB_URI
 echo "${SPRING_DATA_MONGODB_URI}" | wc -c
 
-echo "logging.level.org.springframework.data.mongodb=DEBUG" >> ./application/src/main/resources/application.properties
-echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> ./application/src/main/resources/application.properties
-echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> ./application/src/main/resources/application.properties
-echo "${SPRING_DATA_MONGODB_DATABASE}" >> ./application/src/main/resources/application.properties
-echo "${SPRING_DATA_MONGODB_URI}" >> ./application/src/main/resources/application.properties
-ls -latrh ./application/src/main/resources/application.properties
-cat ./application/src/main/resources/application.properties
+APP_PROPS="./application/src/main/resources/application.properties"
+LIB_PROPS="./library/src/main/resources/application.properties"
+SYNC_PROP="./sync/src/main/resources/application.properties"
+
+echo "org.testcontainers" >> "${APP_PROPS}"
+echo "logging.level.org.springframework.data.mongodb=DEBUG" >> "${APP_PROPS}"
+echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> "${APP_PROPS}"
+echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> "${APP_PROPS}"
+echo "${SPRING_DATA_MONGODB_DATABASE}" >> "${APP_PROPS}"
+echo "${SPRING_DATA_MONGODB_URI}" >> "${APP_PROPS}"
+ls -latrh "${APP_PROPS}"
+cat "${APP_PROPS}"
 
 echo
-mkdir -p ./library/src/test/resources
-echo "service.apiAuthHeaderKey=foo" >> ./library/src/test/resources/application.properties
-echo "service.sportsDataApiBaseUrl=http://fakeApi" >> ./library/src/test/resources/application.properties
-echo "service.mlbSubscriptionKey=asdf" >> ./library/src/test/resources/application.properties
-echo "service.nhlSubscriptionKey=qwerty" >> ./library/src/test/resources/application.properties
-echo "service.soccerSubscriptionKey=1234" >> ./library/src/test/resources/application.properties
-echo "spring.data.mongodb.database=fakeDb" >> ./library/src/test/resources/application.properties
-echo "spring.data.mongodb.uri=mongodb://fakeUri" >> ./library/src/test/resources/application.properties
-ls -latrh ./library/src/test/resources/application.properties
-cat ./library/src/test/resources/application.properties
+echo "service.apiAuthHeaderKey=foo" >> "${LIB_PROPS}"
+echo "service.sportsDataApiBaseUrl=http://fakeApi" >> "${LIB_PROPS}"
+echo "service.mlbSubscriptionKey=asdf" >> "${LIB_PROPS}"
+echo "service.nhlSubscriptionKey=qwerty" >> "${LIB_PROPS}"
+echo "service.soccerSubscriptionKey=1234" >> "${LIB_PROPS}"
+echo "spring.data.mongodb.database=fakeDb" >> "${LIB_PROPS}"
+echo "spring.data.mongodb.uri=mongodb://fakeUri" >> "${LIB_PROPS}"
+ls -latrh "${LIB_PROPS}"
+cat "${LIB_PROPS}"
 
 echo
-mkdir -p ./sync/src/main/resources
-cp ./library/src/test/resources/application.properties ./sync/src/main/resources/application.properties
-echo "spring.main.web-application-type=none" >> ./sync/src/main/resources/application.properties
-ls -latrh ./sync/src/main/resources/application.properties
-cat ./sync/src/main/resources/application.properties
+cp "${LIB_PROPS}" "${SYNC_PROP}"
+echo "spring.main.web-application-type=none" >> "${SYNC_PROP}"
+ls -latrh > "${SYNC_PROP}"
+cat > "${SYNC_PROP}"
 echo
 
 find . -name application.properties
