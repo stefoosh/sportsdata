@@ -25,17 +25,23 @@ public class ReqResLogFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        LOG.debug("remoteAddr={} remoteHost={}", request.getRemoteAddr(), request.getRemoteHost());
         String message = String.format("%s %s %s",
                 request.getMethod(),
                 response.getStatus(),
-                request.getRequestURI());
-
+                request.getRequestURL());
         if (request.getQueryString() != null) {
             message = message + "?" + request.getQueryString();
         }
-        LOG.debug(message);
-        LOG.debug("remoteAddr={} remoteHost={}", request.getRemoteAddr(), request.getRemoteHost());
 
+        if (response.getStatus() > 500) {
+            LOG.error(message);
+        } else if (response.getStatus() > 200) {
+            LOG.warn(message);
+        } else {
+            logger.debug(message);
+        }
         filterChain.doFilter(request, response);
     }
 }

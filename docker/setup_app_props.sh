@@ -27,5 +27,6 @@ echo "spring.main.web-application-type=none" >> "${SYNC_PROP}"
 echo
 ls -latrh "${APP_PROPS}"
 cat "${APP_PROPS}"
+echo
 ls -latrh "${SYNC_PROP}"
 cat "${SYNC_PROP}"

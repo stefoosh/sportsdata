@@ -1,4 +1,4 @@
-package sh.stefoosh.sportsdata.application;
+package sh.stefoosh.sportsdata.application.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,10 +45,19 @@ import static sh.stefoosh.sportsdata.constants.Package.*;
 	private <T extends StadiumVenue> List<T> findStadiumVenue(Class<T> cls, Optional<Integer> id) {
 		// TODO: use reflection to call a method that returns the idFieldName
 		//  and pass it as the second arg in findByClassNameAndIdFieldName(String, String, int)
-		return id.isEmpty() || id.isPresent() && id.get() == 0 ?
+		List<T> documents = id.isEmpty() || id.isPresent() && id.get() == 0 ?
 				stadiumVenueRepository.findByClassName(cls.getName()) :
-					"SoccerVenue" == cls.getSimpleName() ?
-							stadiumVenueRepository.findByClassNameAndVenueId(cls.getName(), id.get()) :
-							stadiumVenueRepository.findByClassNameAndStadiumId(cls.getName(), id.get());
+				"SoccerVenue" == cls.getSimpleName() ?
+						stadiumVenueRepository.findByClassNameAndVenueId(cls.getName(), id.get()) :
+						stadiumVenueRepository.findByClassNameAndStadiumId(cls.getName(), id.get());
+
+		String message = String.format("MongoDb query returned %s %s docs", cls.getSimpleName(), documents.size());
+		if (documents.isEmpty()) {
+			LOG.warn(message);
+		} else {
+			LOG.debug(message);
+		}
+
+		return documents;
 	}
 }

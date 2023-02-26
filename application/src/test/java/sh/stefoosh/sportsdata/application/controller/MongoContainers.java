@@ -1,4 +1,4 @@
-package sh.stefoosh.sportsdata.application;
+package sh.stefoosh.sportsdata.application.controller;
 
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
