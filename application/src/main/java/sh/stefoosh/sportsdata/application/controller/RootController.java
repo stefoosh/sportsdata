@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RootController {
-    @GetMapping("/")
-    public String root() {
-        // TODO: log request parameters and response
-        return "Hella Werld";
-    }
+//    @GetMapping("/")
+//    public String root() {
+//        return "Hella Werld";
+//    }
 }

@@ -68,7 +68,7 @@ public class StadiumVenueControllerUnitTest {
         );
         this.stadiumVenueRepository.save(exptectedMlbStadium);
 
-        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadiums(Optional.of(22));
+        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadiums(22);
 
         Assertions.assertEquals(1, controllerResponse.size());
         Assertions.assertEquals(22, controllerResponse.get(0).getStadiumId());
@@ -98,26 +98,26 @@ public class StadiumVenueControllerUnitTest {
                 9999
         );
         this.stadiumVenueRepository.saveAll(List.of(expectedArenaOne, expectedArenaTwo));
-        Optional<Integer> optionalZeroInvokesShortCircuit = Optional.of(0);
 
-        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(optionalZeroInvokesShortCircuit);
+        List<NhlArena> controllerResponse = stadiumVenueController.nhlArenas(0);
 
         Assertions.assertEquals(2, controllerResponse.size());
     }
 
     @Test
     void givenSoccerIdNotInDb_shouldReturnEmptyList() {
-        Optional<Integer> optionalIdNotInDb = Optional.of(-1);
+        int idNotInDb = -1;
 
-        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(idNotInDb);
 
         Assertions.assertEquals(0, controllerResponse.size());
     }
 
     @Test
     void givenSoccerId_shouldReturnOneSoccerVenue() {
+        int expectedId = 202;
         SoccerVenue expectedStadium = new SoccerVenue(
-                202,
+                expectedId,
                 "Hotspur Stadium",
                 "Tottenham",
                 "London City",
@@ -126,12 +126,11 @@ public class StadiumVenueControllerUnitTest {
                 0.1,
                 99999
         );
-        Optional<Integer> optionalIdNotInDb = Optional.of(202);
         this.stadiumVenueRepository.save(expectedStadium);
 
-        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(expectedId);
 
         Assertions.assertEquals(1, controllerResponse.size());
-        Assertions.assertEquals(202, controllerResponse.get(0).getVenueId());
+        Assertions.assertEquals(expectedId, controllerResponse.get(0).getVenueId());
     }
 }

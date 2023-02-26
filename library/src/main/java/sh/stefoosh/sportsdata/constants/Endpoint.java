@@ -4,4 +4,8 @@ final public class Endpoint {
     public static final String MLB_SCORES_JSON_STADIUMS = "/mlb/scores/json/Stadiums";
     public static final String NHL_SCORES_JSON_STADIUMS = "/nhl/scores/json/Stadiums";
     public static final String SOCCER_SCORES_JSON_VENUES = "/soccer/scores/json/Venues";
+
+    public static final String MLB_STADIUMS = "/mlb/stadiums";
+    public static final String NHL_ARENAS = "/nhl/arenas";
+    public static final String SOCCER_VENUES = "/soccer/venues";
 }
