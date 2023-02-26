@@ -20,7 +20,12 @@ APP_PROPS="./application/src/main/resources/application.properties"
 LIB_PROPS="./library/src/test/resources/application.properties"
 SYNC_PROP="./sync/src/main/resources/application.properties"
 
-echo "org.testcontainers=DEBUG" >> "${APP_PROPS}"
+echo "org.testcontainers=INFO" >> "${APP_PROPS}"
+echo "com.github.dockerjava=WARN" >> "${APP_PROPS}"
+echo "com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.wire=OFF" >> "${APP_PROPS}"
+cp "${APP_PROPS}" "${LIB_PROPS}"
+
+echo
 echo "logging.level.org.springframework.data.mongodb=DEBUG" >> "${APP_PROPS}"
 echo "logging.level.sh.stefoosh.sportsdata.application=DEBUG" >> "${APP_PROPS}"
 echo "logging.level.org.springframework.data.mongodb.repository.query=DEBUG" >> "${APP_PROPS}"
@@ -28,7 +33,6 @@ echo "${SPRING_DATA_MONGODB_DATABASE}" >> "${APP_PROPS}"
 echo "${SPRING_DATA_MONGODB_URI}" >> "${APP_PROPS}"
 
 echo
-echo "org.testcontainers=DEBUG" >> "${LIB_PROPS}"
 echo "service.apiAuthHeaderKey=foo" >> "${LIB_PROPS}"
 echo "service.sportsDataApiBaseUrl=http://fakeApi" >> "${LIB_PROPS}"
 echo "service.mlbSubscriptionKey=asdf" >> "${LIB_PROPS}"
@@ -39,7 +43,6 @@ echo "service.soccerSubscriptionKey=1234" >> "${LIB_PROPS}"
 
 echo
 cp "${LIB_PROPS}" "${SYNC_PROP}"
-echo "org.testcontainers=DEBUG" >> "${SYNC_PROP}"
 echo "spring.main.web-application-type=none" >> "${SYNC_PROP}"
 
 echo
