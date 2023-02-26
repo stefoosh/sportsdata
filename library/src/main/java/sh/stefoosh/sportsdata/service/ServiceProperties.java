@@ -13,17 +13,17 @@ import org.springframework.validation.annotation.Validated;
 public class ServiceProperties {
 
 	@NotBlank
-	private String sportsDataApiBaseUrl;
+	private String sportsDataApiBaseUrl = "http://localhost:9090";
 
 	@NotBlank
-	private String apiAuthHeaderKey;
+	private String apiAuthHeaderKey = "stub-header-key";
 
 	@NotBlank
-	private String mlbSubscriptionKey;
+	private String mlbSubscriptionKey = "mlbStubSTUB";
 
 	@NotBlank
-	private String nhlSubscriptionKey;
+	private String nhlSubscriptionKey = "nhlStubSTUB";
 
 	@NotBlank
-	private String soccerSubscriptionKey;
+	private String soccerSubscriptionKey = "soccerStubSTUB";
 }

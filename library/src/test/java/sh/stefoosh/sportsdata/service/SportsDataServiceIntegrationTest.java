@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.TestPropertySource;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 
@@ -21,13 +20,11 @@ import java.io.IOException;
 import java.util.List;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
-//import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
 
 @SpringBootTest
-@TestPropertySource(locations = "/application.properties")
+//@TestPropertySource(locations = "/application.properties")
 public class SportsDataServiceIntegrationTest {
 
-//    @EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
     @SpringBootApplication
     static class TestConfiguration {
     }

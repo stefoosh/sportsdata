@@ -73,6 +73,7 @@ test {
         exceptionFormat "full"
 //		events = ["passed", "skipped", "failed"]
     }
+
 }
 
 //apply plugin: "checkstyle"
