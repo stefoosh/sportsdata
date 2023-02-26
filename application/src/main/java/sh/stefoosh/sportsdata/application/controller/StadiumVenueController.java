@@ -47,7 +47,7 @@ import static sh.stefoosh.sportsdata.constants.Package.*;
 		//  and pass it as the second arg in findByClassNameAndIdFieldName(String, String, int)
 		List<T> documents = id.isEmpty() || id.isPresent() && id.get() == 0 ?
 				stadiumVenueRepository.findByClassName(cls.getName()) :
-				"SoccerVenue" == cls.getSimpleName() ?
+				"SoccerVenue".equals(cls.getSimpleName()) ?
 						stadiumVenueRepository.findByClassNameAndVenueId(cls.getName(), id.get()) :
 						stadiumVenueRepository.findByClassNameAndStadiumId(cls.getName(), id.get());
 

@@ -113,4 +113,25 @@ public class StadiumVenueControllerUnitTest {
 
         Assertions.assertEquals(0, controllerResponse.size());
     }
+
+    @Test
+    void givenSoccerId_shouldReturnOneSoccerVenue() {
+        SoccerVenue expectedStadium = new SoccerVenue(
+                202,
+                "Hotspur Stadium",
+                "Tottenham",
+                "London City",
+                "England",
+                1.0,
+                0.1,
+                99999
+        );
+        Optional<Integer> optionalIdNotInDb = Optional.of(202);
+        this.stadiumVenueRepository.save(expectedStadium);
+
+        List<SoccerVenue> controllerResponse = stadiumVenueController.soccerVenues(optionalIdNotInDb);
+
+        Assertions.assertEquals(1, controllerResponse.size());
+        Assertions.assertEquals(202, controllerResponse.get(0).getVenueId());
+    }
 }

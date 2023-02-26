@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-java -version
-
 pwd
 ls -latrh
 mkdir -p ./application/src/main/resources
