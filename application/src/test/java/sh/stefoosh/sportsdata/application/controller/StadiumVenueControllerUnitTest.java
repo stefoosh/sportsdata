@@ -34,8 +34,11 @@ import static sh.stefoosh.sportsdata.constants.Package.*;
 public class StadiumVenueControllerUnitTest {
     private static final Logger LOG = LoggerFactory.getLogger(StadiumVenueControllerUnitTest.class);
 
-    @Container
+//    @Container
     static MongoDBContainer mongoDBContainer = MongoContainers.getDefaultContainer();
+    static {
+        mongoDBContainer.start();
+    }
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
