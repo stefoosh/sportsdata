@@ -23,11 +23,7 @@ import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS
 @SpringBootTest
 public class SportsDataServiceIntegrationTest {
 
-    @SpringBootApplication
-    static class TestConfiguration {
-    }
-
-    public static MockWebServer mockUpstream;
+    private static MockWebServer mockUpstream;
 
     @Autowired
     private SportsDataService sportsDataService;
@@ -50,7 +46,7 @@ public class SportsDataServiceIntegrationTest {
     }
 
     @Test
-    void givenMlbStadiumVenueResource_thenReturnList () throws JsonProcessingException, InterruptedException {
+    void givenMlbStadiumVenueResource_thenReturnList() throws JsonProcessingException, InterruptedException {
         MlbStadium mockMlbStadium = new MlbStadium(
                 22,
                 "SF",
@@ -71,5 +67,9 @@ public class SportsDataServiceIntegrationTest {
         RecordedRequest recordedRequest = mockUpstream.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_SCORES_JSON_STADIUMS, recordedRequest.getPath());
+    }
+
+    @SpringBootApplication
+    static class TestConfiguration {
     }
 }

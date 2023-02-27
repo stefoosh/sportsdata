@@ -36,7 +36,7 @@ jobs:
 
       - run: ./docker/application-properties.sh
       - run: ./gradlew clean test build bootJar
-
+      #      - run: ./gradlew clean checkstyleMain spotbugsMain test build bootJar
       - run: docker build . -f ./docker/Dockerfile -t stefoosh/sportsdata:latest
       - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
       - run: docker image push stefoosh/sportsdata:latest

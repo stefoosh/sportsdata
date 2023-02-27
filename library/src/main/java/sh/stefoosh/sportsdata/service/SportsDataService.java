@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -29,47 +30,47 @@ import java.util.NoSuchElementException;
 @EnableConfigurationProperties(ServiceProperties.class)
 public class SportsDataService {
 
+    private static final int MAX_IN_MEMORY_SIZE = 5 * 1024 * 1024;
     private static final Logger LOG = LoggerFactory.getLogger(SportsDataService.class);
-    private final ServiceProperties serviceProperties;
+    private static final ExchangeStrategies EXCHANGE_STRATEGIES = ExchangeStrategies.builder()
+            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(MAX_IN_MEMORY_SIZE))
+            .build();
+
+    @Autowired
+    private ServiceProperties properties;
 
     @Setter(AccessLevel.PRIVATE)
     @Getter(AccessLevel.PRIVATE)
     private WebClient webClient;
 
-    static final int MAX_IN_MEMORY_SIZE = 5 * 1024 * 1024;
-    final ExchangeStrategies strategies = ExchangeStrategies.builder()
-            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(MAX_IN_MEMORY_SIZE))
-            .build();
-
-    public SportsDataService(ServiceProperties serviceProperties) {
-        this.serviceProperties = serviceProperties;
+    public SportsDataService(final ServiceProperties serviceProperties) {
+//        this.properties = serviceProperties;
         setWebClient(WebClient.builder()
                 .baseUrl(serviceProperties.getSportsDataApiBaseUrl())
-                .exchangeStrategies(strategies)
+                .exchangeStrategies(EXCHANGE_STRATEGIES)
                 .build());
-
     }
 
-    protected void setWebClientBaseUrl(String baseUrl) {
+    public final void setWebClientBaseUrl(final String baseUrl) {
         setWebClient(WebClient.builder()
                 .baseUrl(baseUrl)
-                .exchangeStrategies(strategies)
+                .exchangeStrategies(EXCHANGE_STRATEGIES)
                 .build());
     }
 
-    public List<MlbStadium> getMlbStadiums() {
-        return getStadiumVenues(new MlbStadiumResource(serviceProperties));
+    public final List<MlbStadium> getMlbStadiums() {
+        return getStadiumVenues(new MlbStadiumResource(properties));
     }
 
-    public List<NhlArena> getNhlStadiums() {
-        return getStadiumVenues(new NhlStadiumResource(serviceProperties));
+    public final List<NhlArena> getNhlStadiums() {
+        return getStadiumVenues(new NhlStadiumResource(properties));
     }
 
-    public List<SoccerVenue> getSoccerStadiums() {
-        return getStadiumVenues(new SoccerStadiumResource(serviceProperties));
+    public final List<SoccerVenue> getSoccerStadiums() {
+        return getStadiumVenues(new SoccerStadiumResource(properties));
     }
 
-    private <T extends StadiumVenue> List<T> getStadiumVenues(StadiumVenueResource stadiumVenueResource) {
+    private <T extends StadiumVenue> List<T> getStadiumVenues(final StadiumVenueResource stadiumVenueResource) {
         List<T> stadiumVenues = Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
         if (stadiumVenues.isEmpty()) {
             throw new NoSuchElementException(
@@ -78,14 +79,14 @@ public class SportsDataService {
         return stadiumVenues;
     }
 
-    private <T extends ResourceBase, G> G getUpstreamResponseBody(T resource) {
+    private <T extends ResourceBase, G> G getUpstreamResponseBody(final T resource) {
         LOG.debug("Fetching upstream {}", resource.getEndpoint());
 
         ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(resource.getResponseBodyClass());
 
         return getWebClient().get()
                 .uri(resource.getEndpoint())
-                .header(serviceProperties.getApiAuthHeaderKey(), resource.getApiKey())
+                .header(properties.getApiAuthHeaderKey(), resource.getApiKey())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(typeRef)

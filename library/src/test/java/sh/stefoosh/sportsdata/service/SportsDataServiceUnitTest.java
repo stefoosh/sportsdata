@@ -1,22 +1,19 @@
 package sh.stefoosh.sportsdata.service;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 //@ExtendWith(MockitoExtension.class)
 
 @SpringBootTest("service.apiAuthHeaderKey=Hella")
 public class SportsDataServiceUnitTest {
+    @Autowired
+    private SportsDataService sportsDataService;
+
     @SpringBootApplication
     static class TestConfiguration {
     }
-
-    @Autowired
-    private SportsDataService sportsDataService;
 
 //    SportsDataService sportsDataService;
 //    @Mock

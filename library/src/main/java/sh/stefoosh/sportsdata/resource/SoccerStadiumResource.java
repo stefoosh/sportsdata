@@ -7,12 +7,12 @@ import static sh.stefoosh.sportsdata.constants.Endpoint.SOCCER_SCORES_JSON_VENUE
 
 public class SoccerStadiumResource extends StadiumVenueResource {
 
-    public SoccerStadiumResource(ServiceProperties serviceProperties) {
+    public SoccerStadiumResource(final ServiceProperties serviceProperties) {
         super(serviceProperties.getSoccerSubscriptionKey(), SOCCER_SCORES_JSON_VENUES);
     }
 
     @Override
-    public Class<SoccerVenue[]> getResponseBodyClass() {
+    public final Class<SoccerVenue[]> getResponseBodyClass() {
         return SoccerVenue[].class;
     }
 }

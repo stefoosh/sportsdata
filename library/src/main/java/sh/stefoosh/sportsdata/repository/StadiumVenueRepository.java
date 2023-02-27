@@ -13,12 +13,12 @@ public interface StadiumVenueRepository<T extends StadiumVenue, ID> extends Mong
 
     // this method is an example of a property expression that can't be interpreted
     // findByIdAndClass resolves Id but Class won't. So reversing the field order with a declared query is needed
-    @Query(value="{ '_class' : ?0, 'stadiumId': ?1 }")
+    @Query(value = "{ '_class' : ?0, 'stadiumId': ?1 }")
     List<T> findByClassNameAndStadiumId(@NonNull String className, @NonNull int id);
 
-    @Query(value="{ '_class' : ?0, 'venueId': ?1 }")
+    @Query(value = "{ '_class' : ?0, 'venueId': ?1 }")
     List<T> findByClassNameAndVenueId(@NonNull String className, @NonNull int id);
 
-    @Query(value="{ '_class' : ?0 }")
+    @Query(value = "{ '_class' : ?0 }")
     List<T> findByClassName(@NonNull String className);
 }

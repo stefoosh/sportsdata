@@ -16,9 +16,9 @@ buildscript {
 }
 
 plugins {
+    id "com.github.spotbugs" version "${spotbugsPluginVersion}"
     id "io.spring.dependency-management" version "${springGradleDependencyManagementPluginVersion}"
     id "org.springframework.boot" version "${springBootVersion}"
-    id "com.github.spotbugs" version "${spotbugsPluginVersion}"
 }
 
 repositories {

@@ -7,7 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import static sh.stefoosh.sportsdata.constants.JsonProperty.*;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.CAPACITY;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.CITY;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.COUNTRY;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.LATITUDE;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.LONGITUDE;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.NAME;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.STADIUM_ID;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.STATE;
 
 @Document
 @AllArgsConstructor
