@@ -18,30 +18,35 @@ import java.io.IOException;
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
 @Component
 @WebFilter(filterName = "RequestCachingFilter", urlPatterns = "/*")
-public class ReqResLogFilter extends OncePerRequestFilter {
+public final class ReqResLogFilter extends OncePerRequestFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReqResLogFilter.class);
 
+    private ReqResLogFilter() {
+    }
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain filterChain)
             throws ServletException, IOException {
-
-        LOG.debug("remoteAddr={} remoteHost={}", request.getRemoteAddr(), request.getRemoteHost());
-        String message = String.format("%s %s %s",
-                request.getMethod(),
-                response.getStatus(),
-                request.getRequestURL());
-        if (request.getQueryString() != null) {
-            message = message + "?" + request.getQueryString();
-        }
-
-        if (response.getStatus() > 500) {
-            LOG.error(message);
-        } else if (response.getStatus() > 200) {
-            LOG.warn(message);
-        } else {
-            logger.debug(message);
-        }
+//
+//        LOG.debug("remoteAddr={} remoteHost={}", request.getRemoteAddr(), request.getRemoteHost());
+//        String message = String.format("%s %s %s",
+//                request.getMethod(),
+//                response.getStatus(),
+//                request.getRequestURL());
+//        if (request.getQueryString() != null) {
+//            message = message + "?" + request.getQueryString();
+//        }
+//
+//        if (response.getStatus() > 500) {
+//            LOG.error(message);
+//        } else if (response.getStatus() > 200) {
+//            LOG.warn(message);
+//        } else {
+//            logger.debug(message);
+//        }
         filterChain.doFilter(request, response);
     }
 }

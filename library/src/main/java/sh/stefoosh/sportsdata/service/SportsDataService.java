@@ -44,7 +44,6 @@ public class SportsDataService {
     private WebClient webClient;
 
     public SportsDataService(final ServiceProperties serviceProperties) {
-//        this.properties = serviceProperties;
         setWebClient(WebClient.builder()
                 .baseUrl(serviceProperties.getSportsDataApiBaseUrl())
                 .exchangeStrategies(EXCHANGE_STRATEGIES)
