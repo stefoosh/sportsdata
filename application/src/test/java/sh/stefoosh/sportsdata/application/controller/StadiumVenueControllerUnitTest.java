@@ -13,7 +13,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
@@ -22,7 +21,8 @@ import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 
 import java.util.List;
 
-import static sh.stefoosh.sportsdata.constants.Package.*;
+import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
+import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_WEB;
 
 @ComponentScan({
         SH_STEFOOSH_SPORTSDATA_WEB,
@@ -34,22 +34,22 @@ import static sh.stefoosh.sportsdata.constants.Package.*;
 public class StadiumVenueControllerUnitTest {
     private static final Logger LOG = LoggerFactory.getLogger(StadiumVenueControllerUnitTest.class);
 
-//    @Container
+    //    @Container
     static MongoDBContainer mongoDBContainer = MongoContainers.getDefaultContainer();
+
     static {
         mongoDBContainer.start();
     }
+
+    @Autowired
+    private StadiumVenueRepository stadiumVenueRepository;
+    @Autowired
+    private StadiumVenueController stadiumVenueController;
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
-
-    @Autowired
-    private StadiumVenueRepository stadiumVenueRepository;
-
-    @Autowired
-    private StadiumVenueController stadiumVenueController;
 
     @AfterEach
     void cleanUp() {

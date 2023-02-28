@@ -17,6 +17,7 @@ buildscript {
 
 plugins {
     id "com.github.spotbugs" version "${spotbugsPluginVersion}"
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"
     id "io.spring.dependency-management" version "${springGradleDependencyManagementPluginVersion}"
     id "org.springframework.boot" version "${springBootVersion}"
 }
@@ -26,7 +27,21 @@ repositories {
     maven { url "https://dl.bintray.com/servicetalk/servicetalk/" }
 }
 
+gitProperties {
+    keys = ['git.commit.id',
+            'git.commit.id.abbrev',
+            'git.commit.user.name',
+            'git.commit.time',
+            'git.build.host',
+            'git.build.version',
+            'git.remote.origin.url'
+    ]
+}
+
 apply plugin: "org.springframework.boot"
+springBoot {
+    buildInfo()
+}
 
 apply plugin: "java"
 java {

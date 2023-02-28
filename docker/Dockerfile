@@ -5,6 +5,6 @@ COPY ./application/build/libs/application.jar /usr/local/sportsdata/application.
 CMD ["java", \
         "-server", \
         "-jar", \
-        "/usr/local/sportsdata/application.jar"]
+        "/usr/local/sportsdata/application-0.0.1-SNAPSHOT.jar"]
 
 EXPOSE 8080
