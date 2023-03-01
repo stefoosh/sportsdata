@@ -3,7 +3,6 @@ package sh.stefoosh.sportsdata.application.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +19,7 @@ import java.util.Optional;
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_STADIUMS;
 import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_ARENAS;
 import static sh.stefoosh.sportsdata.constants.Endpoint.SOCCER_VENUES;
-import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
 
-@EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
 @RestController
 @RequestMapping("/location")
 public final class StadiumVenueController {
