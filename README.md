@@ -52,6 +52,5 @@ Running the prod image
 docker run -p 8080:8080 --platform linux/amd64 stefoosh/sportsdata:latest
 ```
 
-Secrets and constants go into `src/{main,test}/resources/application.properties` on a per-subproject basis.
-They're defined in `.gitignore` and not included in this repo.
-
+`application.properties` is defined `.gitignore` and gets populated on a per-project basis by a template with
+associated script in `docker/`
