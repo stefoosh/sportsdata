@@ -17,14 +17,12 @@ import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.NhlGame;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
-import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.resource.MlbGameResource;
 import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 import sh.stefoosh.sportsdata.resource.NhlGameResource;
 import sh.stefoosh.sportsdata.resource.NhlStadiumResource;
 import sh.stefoosh.sportsdata.resource.ResourceBase;
 import sh.stefoosh.sportsdata.resource.SoccerStadiumResource;
-import sh.stefoosh.sportsdata.resource.StadiumVenueResource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,30 +60,39 @@ public class SportsDataService {
     }
 
     public final List<MlbStadium> getMlbStadiums() {
-        return getStadiumVenues(new MlbStadiumResource(properties));
+        return getModels(new MlbStadiumResource(properties));
     }
 
     public final List<NhlArena> getNhlStadiums() {
-        return getStadiumVenues(new NhlStadiumResource(properties));
+        return getModels(new NhlStadiumResource(properties));
     }
 
     public final List<SoccerVenue> getSoccerStadiums() {
-        return getStadiumVenues(new SoccerStadiumResource(properties));
+        return getModels(new SoccerStadiumResource(properties));
     }
 
-    private <T extends StadiumVenue> List<T> getStadiumVenues(final StadiumVenueResource stadiumVenueResource) {
-        List<T> stadiumVenues = Arrays.asList(getUpstreamResponseBody(stadiumVenueResource));
-        if (stadiumVenues.isEmpty()) {
+
+    public final List<MlbGame> getMlbGames() {
+        return getModels(new MlbGameResource(properties));
+    }
+
+    public final List<NhlGame> getNhlGames() {
+        return getModels(new NhlGameResource(properties));
+    }
+
+    private <T> List<T> getModels(final ResourceBase upstreamResource) {
+        List<T> upstreamModels = Arrays.asList(getUpstreamResponseBody(upstreamResource));
+        if (upstreamModels.isEmpty()) {
             throw new NoSuchElementException(
-                    String.format("%s returned an empty list", stadiumVenueResource.getEndpoint()));
+                    String.format("%s returned an empty list of models", upstreamResource.getEndpoint()));
         }
-        return stadiumVenues;
+        return upstreamModels;
     }
 
-    private <T extends ResourceBase, G> G getUpstreamResponseBody(final T resource) {
+    private <T extends ResourceBase, R> R getUpstreamResponseBody(final T resource) {
         LOG.debug("Fetching upstream {}", resource.getEndpoint());
 
-        ParameterizedTypeReference<G> typeRef = ParameterizedTypeReference.forType(resource.getResponseBodyClass());
+        ParameterizedTypeReference<R> typeRef = ParameterizedTypeReference.forType(resource.getResponseBodyClass());
 
         return getWebClient().get()
                 .uri(resource.getEndpoint())
@@ -94,13 +101,5 @@ public class SportsDataService {
                 .retrieve()
                 .bodyToMono(typeRef)
                 .block();
-    }
-
-    public final List<MlbGame> getMlbGames() {
-        return Arrays.asList(getUpstreamResponseBody(new MlbGameResource(properties)));
-    }
-
-    public final List<NhlGame> getNhlGames() {
-        return Arrays.asList(getUpstreamResponseBody(new NhlGameResource(properties)));
     }
 }
