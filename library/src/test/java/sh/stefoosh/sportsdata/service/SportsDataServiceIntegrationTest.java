@@ -15,12 +15,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
+import sh.stefoosh.sportsdata.model.NhlGame;
 
 import java.io.IOException;
 import java.util.List;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_GAMES;
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
+import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_SCORES_JSON_GAMES;
 
 @SpringBootTest
 public class SportsDataServiceIntegrationTest {
@@ -92,6 +94,39 @@ public class SportsDataServiceIntegrationTest {
         RecordedRequest recordedRequest = mockUpstream.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_SCORES_JSON_GAMES, recordedRequest.getPath());
+    }
+
+    @Test
+    void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException {
+        NhlGame mockNhlGameA = new NhlGame(
+                "2023-04-11T00:00:00",
+                "2023-04-11T19:00:00",
+                "2022-09-16T04:02:52",
+                "Scheduled",
+                3,
+                9,
+                99
+        );
+        NhlGame mockNhlGameB = new NhlGame(
+                "2023-05-11T00:00:00",
+                "2023-05-11T19:00:00",
+                "2022-09-16T04:02:52",
+                "Scheduled",
+                1,
+                2,
+                88
+        );
+        mockUpstream.enqueue(new MockResponse().setBody(
+                        MAPPER.writeValueAsString(List.of(mockNhlGameA, mockNhlGameB)))
+                .addHeader("Content-Type", "application/json"));
+
+        List<NhlGame> mlbGames = sportsDataService.getNhlGames();
+
+        Assertions.assertNotNull(mlbGames);
+        Assertions.assertEquals(2, mlbGames.size());
+        RecordedRequest recordedRequest = mockUpstream.takeRequest();
+        Assertions.assertEquals("GET", recordedRequest.getMethod());
+        Assertions.assertEquals(NHL_SCORES_JSON_GAMES, recordedRequest.getPath());
     }
 
     @SpringBootApplication

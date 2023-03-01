@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import sh.stefoosh.sportsdata.model.Game;
 import sh.stefoosh.sportsdata.model.MlbGame;
@@ -43,11 +44,11 @@ public class Importer implements CommandLineRunner {
         SpringApplication.run(Importer.class, args);
     }
 
-    private <T extends StadiumVenue> void saveAllStadiumVenues(final List<T> upstream) {
+    private <T, R extends MongoRepository> void saveAllModels(final List<T> upstream, final R repository) {
         LOG.debug("{} objects fetched", upstream.size());
         LOG.debug("{}", upstream);
 
-        List<T> saveAllResult = stadiumVenueRepository.saveAll(upstream);
+        List<T> saveAllResult = repository.saveAll(upstream);
         LOG.debug("{} documents saved", saveAllResult.size());
         LOG.debug("{}", saveAllResult);
 
@@ -57,21 +58,7 @@ public class Importer implements CommandLineRunner {
         }
     }
 
-    private <T extends Game> void saveAllGames(final List<T> upstream) {
-        LOG.debug("{} objects fetched", upstream.size());
-        LOG.debug("{}", upstream);
-
-        List<T> saveAllResult = gamesRepository.saveAll(upstream);
-        LOG.debug("{} documents saved", saveAllResult.size());
-        LOG.debug("{}", saveAllResult);
-
-        if (upstream.size() != saveAllResult.size()) {
-            LOG.error("Number of objects fetched {} and saved {} should match",
-                    upstream.size(), saveAllResult.size());
-        }
-    }
-
-    private Stream<List<? extends StadiumVenue>> fetchUpstreamStadiumVenues() {
+    private Stream<List<? extends StadiumVenue>> fetchUpstreamLocations() {
         List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
         List<NhlArena> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
         List<SoccerVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
@@ -91,7 +78,7 @@ public class Importer implements CommandLineRunner {
         LOG.debug("Argument args.length=" + args.length);
         LOG.debug("Arguments args=" + Arrays.toString(args));
 
-        fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
-        fetchUpstreamGames().forEach(this::saveAllGames);
+        fetchUpstreamLocations().forEach(upstreamLocations -> saveAllModels(upstreamLocations, stadiumVenueRepository));
+        fetchUpstreamGames().forEach(upstreamGameModels -> saveAllModels(upstreamGameModels, gamesRepository));
     }
 }
