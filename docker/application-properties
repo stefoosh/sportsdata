@@ -1,8 +1,10 @@
 logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG
 logging.level.org.springframework.data.mongodb.repository.query=DEBUG
 logging.level.org.springframework.data.repository=DEBUG
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{trace_id} %n
 logging.level.sh.stefoosh.sportsdata=DEBUG
-management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=always
+management.endpoints.web.exposure.include=health,info,metrics,prometheus
 management.info.env.enabled=true
 management.info.java.enabled=true
 management.info.git.enabled=true
