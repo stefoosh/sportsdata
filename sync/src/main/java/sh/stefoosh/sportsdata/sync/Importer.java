@@ -11,6 +11,7 @@ import sh.stefoosh.sportsdata.model.Game;
 import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
+import sh.stefoosh.sportsdata.model.NhlGame;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.GamesRepository;
@@ -56,6 +57,20 @@ public class Importer implements CommandLineRunner {
         }
     }
 
+    private <T extends Game> void saveAllGames(final List<T> upstream) {
+        LOG.debug("{} objects fetched", upstream.size());
+        LOG.debug("{}", upstream);
+
+        List<T> saveAllResult = gamesRepository.saveAll(upstream);
+        LOG.debug("{} documents saved", saveAllResult.size());
+        LOG.debug("{}", saveAllResult);
+
+        if (upstream.size() != saveAllResult.size()) {
+            LOG.error("Number of objects fetched {} and saved {} should match",
+                    upstream.size(), saveAllResult.size());
+        }
+    }
+
     private Stream<List<? extends StadiumVenue>> fetchUpstreamStadiumVenues() {
         List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
         List<NhlArena> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
@@ -65,9 +80,10 @@ public class Importer implements CommandLineRunner {
     }
 
     private Stream<List<? extends Game>> fetchUpstreamGames() {
-        List<MlbGame> upstreamGames = sportsDataService.getMlbGames();
+        List<MlbGame> upstreamMlbGames = sportsDataService.getMlbGames();
+        List<NhlGame> upstreamNhlGames = sportsDataService.getNhlGames();
 
-        return Stream.of(upstreamGames);
+        return Stream.of(upstreamMlbGames, upstreamNhlGames);
     }
 
     @Override
@@ -75,7 +91,7 @@ public class Importer implements CommandLineRunner {
         LOG.debug("Argument args.length=" + args.length);
         LOG.debug("Arguments args=" + Arrays.toString(args));
 
-//        fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
-        fetchUpstreamGames().forEach(games -> gamesRepository.saveAll(games));
+        fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
+        fetchUpstreamGames().forEach(this::saveAllGames);
     }
 }

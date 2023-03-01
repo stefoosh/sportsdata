@@ -8,6 +8,7 @@ public final class Endpoint {
     public static final String NHL_ARENAS = "/nhl/arenas";
     public static final String SOCCER_VENUES = "/soccer/venues";
     public static final String MLB_SCORES_JSON_GAMES = "/mlb/scores/json/Games/2023";
+    public static final String NHL_SCORES_JSON_GAMES = "/nhl/scores/json/Games/2023";
 
 
     private Endpoint() {
