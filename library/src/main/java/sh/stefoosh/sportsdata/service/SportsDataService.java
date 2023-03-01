@@ -12,10 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
+import sh.stefoosh.sportsdata.resource.MlbGameResource;
 import sh.stefoosh.sportsdata.resource.MlbStadiumResource;
 import sh.stefoosh.sportsdata.resource.NhlStadiumResource;
 import sh.stefoosh.sportsdata.resource.ResourceBase;
@@ -90,5 +92,9 @@ public class SportsDataService {
                 .retrieve()
                 .bodyToMono(typeRef)
                 .block();
+    }
+
+    public final List<MlbGame> getMlbGames() {
+        return Arrays.asList(getUpstreamResponseBody(new MlbGameResource(properties)));
     }
 }

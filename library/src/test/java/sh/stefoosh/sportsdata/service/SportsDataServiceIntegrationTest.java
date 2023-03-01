@@ -13,11 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 
 import java.io.IOException;
 import java.util.List;
 
+import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_GAMES;
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
 
 @SpringBootTest
@@ -67,6 +69,29 @@ public class SportsDataServiceIntegrationTest {
         RecordedRequest recordedRequest = mockUpstream.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_SCORES_JSON_STADIUMS, recordedRequest.getPath());
+    }
+
+    @Test
+    void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException {
+        MlbGame mockMlbGame = new MlbGame(
+                "2023-04-11T00:00:00",
+                "2023-04-11T19:00:00",
+                "2022-09-16T04:02:52",
+                "Scheduled",
+                3,
+                9,
+                22
+        );
+        mockUpstream.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbGame)))
+                .addHeader("Content-Type", "application/json"));
+
+        List<MlbGame> mlbGames = sportsDataService.getMlbGames();
+
+        Assertions.assertNotNull(mlbGames);
+        Assertions.assertEquals(mlbGames.iterator().next(), mockMlbGame);
+        RecordedRequest recordedRequest = mockUpstream.takeRequest();
+        Assertions.assertEquals("GET", recordedRequest.getMethod());
+        Assertions.assertEquals(MLB_SCORES_JSON_GAMES, recordedRequest.getPath());
     }
 
     @SpringBootApplication
