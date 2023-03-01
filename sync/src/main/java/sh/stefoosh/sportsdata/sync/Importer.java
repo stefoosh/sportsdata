@@ -7,10 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import sh.stefoosh.sportsdata.model.Game;
+import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
+import sh.stefoosh.sportsdata.repository.GamesRepository;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import sh.stefoosh.sportsdata.service.SportsDataService;
 
@@ -28,6 +31,9 @@ public class Importer implements CommandLineRunner {
 
     @Autowired
     private StadiumVenueRepository stadiumVenueRepository;
+
+    @Autowired
+    private GamesRepository gamesRepository;
 
     @Autowired
     private SportsDataService sportsDataService;
@@ -58,20 +64,18 @@ public class Importer implements CommandLineRunner {
         return Stream.of(upstreamMlbStadiums, upstreamNhlStadiums, upstreamSoccerStadiums);
     }
 
+    private Stream<List<? extends Game>> fetchUpstreamGames() {
+        List<MlbGame> upstreamGames = sportsDataService.getMlbGames();
+
+        return Stream.of(upstreamGames);
+    }
+
     @Override
     public final void run(final String... args) throws Exception {
-
         LOG.debug("Argument args.length=" + args.length);
         LOG.debug("Arguments args=" + Arrays.toString(args));
 
-        fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
-
+//        fetchUpstreamStadiumVenues().forEach(this::saveAllStadiumVenues);
+        fetchUpstreamGames().forEach(games -> gamesRepository.saveAll(games));
     }
-
-    private enum Arguments {
-        HELP,
-        IMPORT
-    }
-
-
 }
