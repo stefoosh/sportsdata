@@ -84,3 +84,6 @@ checkstyle {
 }
 
 apply plugin: "com.github.spotbugs"
+spotbugs {
+    excludeFilter = file("./spotbugs-exclude.xml")
+}

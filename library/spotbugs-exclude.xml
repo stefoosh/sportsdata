@@ -1,0 +1,13 @@
+<FindBugsFilter>
+    <Match>
+        <Package name="sh.stefoosh.sportsdata.model"/>
+        <and>
+            <or>
+                <Bug pattern="EI_EXPOSE_REP"/>
+                <Bug pattern="EI_EXPOSE_BUF"/>
+                <Bug pattern="EI_EXPOSE_REP2"/>
+                <Bug pattern="EI_EXPOSE_BUF2"/>
+            </or>
+        </and>
+    </Match>
+</FindBugsFilter>

@@ -18,6 +18,8 @@ import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlGame;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_GAMES;
@@ -28,6 +30,7 @@ import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_SCORES_JSON_GAMES;
 public class SportsDataServiceIntegrationTest {
 
     private static MockWebServer mockUpstream;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @Autowired
     private SportsDataService sportsDataService;
@@ -74,12 +77,14 @@ public class SportsDataServiceIntegrationTest {
     }
 
     @Test
-    void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException {
+    void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException, ParseException {
         MlbGame mockMlbGame = new MlbGame(
-                "2023-04-11T00:00:00",
-                "2023-04-11T19:00:00",
-                "2022-09-16T04:02:52",
                 "Scheduled",
+                simpleDateFormat.parse("2023-04-11T00:00:00"),
+                simpleDateFormat.parse("2023-04-11T19:00:00"),
+                simpleDateFormat.parse("2022-09-16T04:02:52"),
+                "THE",
+                "SOX",
                 3,
                 9,
                 22
@@ -94,24 +99,29 @@ public class SportsDataServiceIntegrationTest {
         RecordedRequest recordedRequest = mockUpstream.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals(MLB_SCORES_JSON_GAMES, recordedRequest.getPath());
+//        recordedRequest.getBody()
     }
 
     @Test
-    void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException {
+    void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException, ParseException {
         NhlGame mockNhlGameA = new NhlGame(
-                "2023-04-11T00:00:00",
-                "2023-04-11T19:00:00",
-                "2022-09-16T04:02:52",
                 "Scheduled",
+                simpleDateFormat.parse("2023-04-11T00:00:00"),
+                simpleDateFormat.parse("2023-04-11T19:00:00"),
+                simpleDateFormat.parse("2022-09-16T04:02:52"),
+                "FOO",
+                "BAR",
                 3,
                 9,
                 99
         );
         NhlGame mockNhlGameB = new NhlGame(
-                "2023-05-11T00:00:00",
-                "2023-05-11T19:00:00",
-                "2022-09-16T04:02:52",
                 "Scheduled",
+                simpleDateFormat.parse("2023-05-11T00:00:00"),
+                simpleDateFormat.parse("2023-05-11T19:00:00"),
+                simpleDateFormat.parse("2022-09-16T04:02:52"),
+                "FUZ",
+                "BAZ",
                 1,
                 2,
                 88
