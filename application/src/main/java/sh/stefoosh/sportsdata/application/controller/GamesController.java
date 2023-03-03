@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.Game;
 import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.NhlGame;
@@ -27,11 +28,12 @@ public final class GamesController {
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public List<? extends Game> getGame(final @PathVariable String sport, final @PathVariable int id) {
-        if ("nhl".equals(sport)) {
+    public List<? extends Game> getGame(final @PathVariable String sportName, final @PathVariable int id) {
+        Sport sport = Sport.valueOf(sportName);
+        if (sport.equals(Sport.nhl)) {
             return gamesRepository.findByClassNameAndStadiumId(NhlGame.class.getName(), id);
         }
-        if ("mlb".equals(sport)) {
+        if (sport.equals(Sport.mlb)) {
             return gamesRepository.findByClassNameAndStadiumId(MlbGame.class.getName(), id);
         }
         return Collections.emptyList();

@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.Game;
 import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
@@ -28,8 +30,10 @@ import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_RE
 
 @EnableMongoRepositories(basePackages = SH_STEFOOSH_SPORTSDATA_REPOSITORY)
 @SpringBootApplication(scanBasePackages = {SH_STEFOOSH_SPORTSDATA})
-public class Importer implements CommandLineRunner {
+public class Importer implements CommandLineRunner, ExitCodeGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(Importer.class);
+
+    private int exitCode = 1;
 
     @Autowired
     private StadiumVenueRepository stadiumVenueRepository;
@@ -41,20 +45,20 @@ public class Importer implements CommandLineRunner {
     private SportsDataService sportsDataService;
 
     public static void main(final String[] args) {
-        SpringApplication.run(Importer.class, args);
+        System.exit(SpringApplication.exit(SpringApplication.run(Importer.class, args)));
     }
 
-    private <T, R extends MongoRepository> void saveAllModels(final List<T> upstream, final R repository) {
-        LOG.debug("{} objects fetched", upstream.size());
-        LOG.debug("{}", upstream);
+    private <T, R extends MongoRepository> void saveAllModels(final List<T> upstreamResponse, final R repository) {
+        LOG.debug("{} objects fetched", upstreamResponse.size());
+        LOG.debug("{}", upstreamResponse);
 
-        List<T> saveAllResult = repository.saveAll(upstream);
+        List<T> saveAllResult = repository.saveAll(upstreamResponse);
         LOG.debug("{} documents saved", saveAllResult.size());
         LOG.debug("{}", saveAllResult);
 
-        if (upstream.size() != saveAllResult.size()) {
+        if (upstreamResponse.size() != saveAllResult.size()) {
             LOG.error("Number of objects fetched {} and saved {} should match",
-                    upstream.size(), saveAllResult.size());
+                    upstreamResponse.size(), saveAllResult.size());
         }
     }
 
@@ -74,11 +78,57 @@ public class Importer implements CommandLineRunner {
     }
 
     @Override
-    public final void run(final String... args) throws Exception {
-        LOG.debug("Argument args.length=" + args.length);
-        LOG.debug("Arguments args=" + Arrays.toString(args));
+    public final void run(final String... args) {
+        String requiredPositionalArgumentChoices = String.format("Two positional arguments required: %s %s",
+                Arrays.toString(Sport.values()), Arrays.toString(Collection.values()));
 
-        fetchUpstreamLocations().forEach(upstreamLocations -> saveAllModels(upstreamLocations, stadiumVenueRepository));
-        fetchUpstreamGames().forEach(upstreamGameModels -> saveAllModels(upstreamGameModels, gamesRepository));
+        if (args.length == 2) {
+            try {
+                Sport sport = Sport.valueOf(args[0]);
+                Collection collection = Collection.valueOf(args[1]);
+
+//                if (sport.equals(Sport.mlb)) {
+//                    if(collection.equals(Collection.location)) {
+//
+//                    }
+//                    if(collection.equals(Collection.game)) {
+//
+//                    }
+//                }
+
+                // delete before writing to repo
+                // catch upstream communication exception
+                if (sport.equals(Sport.nhl)) {
+                    if (collection.equals(Collection.game)) {
+                        saveAllModels(sportsDataService.getNhlGames(), gamesRepository);
+                    }
+                }
+
+// fetchUpstreamLocations().forEach(upstreamLocations -> saveAllModels(upstreamLocations, stadiumVenueRepository));
+// fetchUpstreamGames().forEach(upstreamGameModels -> saveAllModels(upstreamGameModels, gamesRepository));
+
+                exitCode = 0;
+            } catch (IllegalArgumentException e) {
+                LOG.error(requiredPositionalArgumentChoices);
+                LOG.error("Incorrect arguments sent=" + Arrays.toString(args));
+            } catch (Exception e) {
+                LOG.error(e.toString());
+            }
+        } else {
+            LOG.error(requiredPositionalArgumentChoices);
+            if (args.length > 0) {
+                LOG.error("Args=" + Arrays.toString(args));
+            }
+        }
+    }
+
+    @Override
+    public int getExitCode() {
+        return exitCode;
+    }
+
+    private enum Collection {
+        location,
+        game
     }
 }

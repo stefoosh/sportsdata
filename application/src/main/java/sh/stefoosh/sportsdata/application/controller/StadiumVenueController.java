@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/{sportName}/location")
 public final class StadiumVenueController {
 
     private static final Logger LOG = LoggerFactory.getLogger(StadiumVenueController.class);
@@ -29,7 +28,7 @@ public final class StadiumVenueController {
     private StadiumVenueController() {
     }
 
-    @GetMapping("/")
+    @GetMapping("/{sportName}/location")
     public List<? extends StadiumVenue> getAllStadiumVenues(final @PathVariable String sportName) {
         Sport sport = Sport.valueOf(sportName);
 
@@ -46,7 +45,7 @@ public final class StadiumVenueController {
                 String.format("Missing conditional returning StadiumVenue subclass list for enum %s", sport.name()));
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/mlb/location/{id}", produces = "application/json")
     public ResponseEntity mlbStadium(final @PathVariable int id) {
         Optional doc = stadiumVenueRepository.findOneByClassNameAndStadiumId(MlbStadium.class.getName(), id);
 
@@ -58,12 +57,12 @@ public final class StadiumVenueController {
         return ResponseEntity.of(Optional.of(doc.get()));
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/nhl/location/{id}", produces = "application/json")
     public List<NhlArena> nhlArena(final @PathVariable int id) {
         return findStadiumVenue(NhlArena.class, Optional.of(id));
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/soccer/location/{id}", produces = "application/json")
     public List<SoccerVenue> soccerVenue(final @PathVariable int id) {
         return findStadiumVenue(SoccerVenue.class, Optional.of(id));
     }
@@ -87,11 +86,5 @@ public final class StadiumVenueController {
         }
 
         return documents;
-    }
-
-    private enum Sport {
-        mlb,
-        nhl,
-        soccer
     }
 }
