@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/{sportName}/game")
 public final class GamesController {
     private static final Logger LOG = LoggerFactory.getLogger(GamesController.class);
 
@@ -26,7 +26,7 @@ public final class GamesController {
     private GamesController() {
     }
 
-    @GetMapping("/{sport}/location/{id}")
+    @GetMapping(path = "/{id}", produces = "application/json")
     public List<? extends Game> getGame(final @PathVariable String sport, final @PathVariable int id) {
         if ("nhl".equals(sport)) {
             return gamesRepository.findByClassNameAndStadiumId(NhlGame.class.getName(), id);

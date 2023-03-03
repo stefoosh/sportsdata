@@ -4,6 +4,9 @@ package sh.stefoosh.sportsdata.application.controller;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_CONSTANTS;
@@ -21,8 +24,8 @@ import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_WE
 })
 @RestController
 public class RootController {
-//    @GetMapping("/")
-//    public String root() {
-//        return "Hella Werld";
-//    }
+    @GetMapping("/")
+    public ResponseEntity<String> root() {
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(HttpStatus.I_AM_A_TEAPOT.getReasonPhrase());
+    }
 }

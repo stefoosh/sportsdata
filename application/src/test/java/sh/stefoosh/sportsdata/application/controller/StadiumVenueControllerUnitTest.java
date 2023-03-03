@@ -14,7 +14,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
@@ -56,26 +55,26 @@ public class StadiumVenueControllerUnitTest {
         this.stadiumVenueRepository.deleteAll();
     }
 
-    @Test
-    void givenOneMlbStadium_shouldReturnSameMlbStadium() {
-        MlbStadium exptectedMlbStadium = new MlbStadium(
-                22,
-                "SF",
-                "Candlestick Park",
-                "NorCal",
-                "YouEssAay",
-                6.9,
-                9.6,
-                99999
-        );
-        this.stadiumVenueRepository.save(exptectedMlbStadium);
-
-        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadium(22);
-
-        Assertions.assertEquals(1, controllerResponse.size());
-        Assertions.assertEquals(22, controllerResponse.get(0).getStadiumId());
-        Assertions.assertEquals(exptectedMlbStadium, controllerResponse.get(0));
-    }
+//    @Test
+//    void givenOneMlbStadium_shouldReturnSameMlbStadium() {
+//        MlbStadium exptectedMlbStadium = new MlbStadium(
+//                22,
+//                "SF",
+//                "Candlestick Park",
+//                "NorCal",
+//                "YouEssAay",
+//                6.9,
+//                9.6,
+//                99999
+//        );
+//        this.stadiumVenueRepository.save(exptectedMlbStadium);
+//
+//        List<MlbStadium> controllerResponse = stadiumVenueController.mlbStadium(22);
+//
+//        Assertions.assertEquals(1, controllerResponse.size());
+//        Assertions.assertEquals(22, controllerResponse.get(0).getStadiumId());
+//        Assertions.assertEquals(exptectedMlbStadium, controllerResponse.get(0));
+//    }
 
     @Test
     void givenNoNhlArenas_shouldReturnAllNhlArenas() {

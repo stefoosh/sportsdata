@@ -1,8 +1,9 @@
-logging.file.name=/tmp/grafana-observability.log
+#logging.file.name=/tmp/grafana-observability.log
 #logging.level.org.springframework=DEBUG
 logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG
 logging.level.org.springframework.data.mongodb.repository.query=DEBUG
 logging.level.org.springframework.data.repository=DEBUG
+logging.level.org.springframework.web=DEBUG
 logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG
 logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{trace_id} %n
 logging.level.sh.stefoosh.sportsdata=DEBUG
@@ -24,5 +25,6 @@ server.tomcat.accesslog.suffix=.log
 server.tomcat.accesslog.prefix=access_log
 server.tomcat.accesslog.directory=/tmp
 server.tomcat.accesslog.pattern=common
+spring.mvc.log-request-details=true
 spring.mvc.problemdetails.enabled=true
 # this file MUST end with a newline so echo appending appears below, NOT above this line
