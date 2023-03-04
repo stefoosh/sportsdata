@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import sh.stefoosh.sportsdata.constants.Sport;
 
 import java.util.Date;
 
@@ -27,6 +28,8 @@ import static sh.stefoosh.sportsdata.constants.JsonProperty.UPDATED;
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MlbGame implements Game {
+
+    private Sport sport = Sport.mlb;
 
     @JsonProperty(STATUS)
     private String status;

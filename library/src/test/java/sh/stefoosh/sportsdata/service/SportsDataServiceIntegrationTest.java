@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import sh.stefoosh.sportsdata.constants.Sport;
 import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlGame;
@@ -79,6 +80,7 @@ public class SportsDataServiceIntegrationTest {
     @Test
     void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException, ParseException {
         MlbGame mockMlbGame = new MlbGame(
+                Sport.mlb,
                 "Scheduled",
                 simpleDateFormat.parse("2023-04-11T00:00:00"),
                 simpleDateFormat.parse("2023-04-11T19:00:00"),
@@ -105,6 +107,7 @@ public class SportsDataServiceIntegrationTest {
     @Test
     void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException, ParseException {
         NhlGame mockNhlGameA = new NhlGame(
+                Sport.nhl,
                 "Scheduled",
                 simpleDateFormat.parse("2023-04-11T00:00:00"),
                 simpleDateFormat.parse("2023-04-11T19:00:00"),
@@ -116,6 +119,7 @@ public class SportsDataServiceIntegrationTest {
                 99
         );
         NhlGame mockNhlGameB = new NhlGame(
+                Sport.nhl,
                 "Scheduled",
                 simpleDateFormat.parse("2023-05-11T00:00:00"),
                 simpleDateFormat.parse("2023-05-11T19:00:00"),
