@@ -1,5 +1,7 @@
 package sh.stefoosh.sportsdata.constants;
 
+import static sh.stefoosh.sportsdata.constants.Package.CLASS_CANNOT_BE_INSTANTIATED;
+
 public final class JsonProperty {
     public static final String AWAY_TEAM_ID = "AwayTeamID";
     public static final String AWAY_TEAM = "AwayTeam";
@@ -22,6 +24,6 @@ public final class JsonProperty {
 
     private JsonProperty() {
         throw new UnsupportedOperationException(
-                String.format("%s is a utility class and cannot be instantiated", this.getClass().getName()));
+                String.format(CLASS_CANNOT_BE_INSTANTIATED, this.getClass().getName()));
     }
 }
