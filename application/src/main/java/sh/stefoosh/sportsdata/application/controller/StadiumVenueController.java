@@ -18,6 +18,8 @@ import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
 import java.util.List;
 import java.util.Optional;
 
+import static sh.stefoosh.sportsdata.constants.Endpoint.APPLICATION_JSON;
+
 @RestController
 public final class StadiumVenueController {
 
@@ -28,7 +30,7 @@ public final class StadiumVenueController {
     private StadiumVenueController() {
     }
 
-    @GetMapping("/{sportName}/location")
+    @GetMapping(path = "/{sportName}/location", produces = APPLICATION_JSON)
     public List<? extends StadiumVenue> getAllStadiumVenues(final @PathVariable String sportName) {
         Sport sport = Sport.valueOf(sportName);
 
@@ -45,7 +47,7 @@ public final class StadiumVenueController {
                 String.format("Missing conditional returning StadiumVenue subclass list for enum %s", sport.name()));
     }
 
-    @GetMapping(path = "/mlb/location/{id}", produces = "application/json")
+    @GetMapping(path = "/mlb/location/{id}", produces = APPLICATION_JSON)
     public ResponseEntity mlbStadium(final @PathVariable int id) {
         Optional doc = stadiumVenueRepository.findOneByClassNameAndStadiumId(MlbStadium.class.getName(), id);
 
@@ -57,12 +59,12 @@ public final class StadiumVenueController {
         return ResponseEntity.of(Optional.of(doc.get()));
     }
 
-    @GetMapping(path = "/nhl/location/{id}", produces = "application/json")
+    @GetMapping(path = "/nhl/location/{id}", produces = APPLICATION_JSON)
     public List<NhlArena> nhlArena(final @PathVariable int id) {
         return findStadiumVenue(NhlArena.class, Optional.of(id));
     }
 
-    @GetMapping(path = "/soccer/location/{id}", produces = "application/json")
+    @GetMapping(path = "/soccer/location/{id}", produces = APPLICATION_JSON)
     public List<SoccerVenue> soccerVenue(final @PathVariable int id) {
         return findStadiumVenue(SoccerVenue.class, Optional.of(id));
     }

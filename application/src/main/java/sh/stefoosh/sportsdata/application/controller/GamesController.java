@@ -16,6 +16,8 @@ import sh.stefoosh.sportsdata.repository.GamesRepository;
 import java.util.Collections;
 import java.util.List;
 
+import static sh.stefoosh.sportsdata.constants.Endpoint.APPLICATION_JSON;
+
 @RestController
 @RequestMapping("/{sportName}/game")
 public final class GamesController {
@@ -27,7 +29,7 @@ public final class GamesController {
     private GamesController() {
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/{id}", produces = APPLICATION_JSON)
     public List<? extends Game> getGame(final @PathVariable String sportName, final @PathVariable int id) {
         Sport sport = Sport.valueOf(sportName);
         if (sport.equals(Sport.nhl)) {
