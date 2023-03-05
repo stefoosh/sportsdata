@@ -12,6 +12,7 @@ Featuring:
 
 - Backend client service calls with Spring Framework 5 WebClient
 - Testcontainers beneath controller unit tests
+- Static analysis: checkstyle and `com.github.spotbugs`
 
 #
 
