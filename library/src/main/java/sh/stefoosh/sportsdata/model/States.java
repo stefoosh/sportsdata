@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import static sh.stefoosh.sportsdata.constants.JsonProperty.COUNTRY_CODE;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.COUNTRY_ID;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.COUNTRY_NAME;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.STATE_CODE;
+
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +24,16 @@ public class States {
 
     private String name;
 
-    @Field(name = "state_code")
+    @Field(name = COUNTRY_ID)
+    private int countryId;
+
+    @Field(name = COUNTRY_CODE)
+    private String countryCode;
+
+    @Field(name = COUNTRY_NAME)
+    private String countryName;
+
+    @Field(name = STATE_CODE)
     private String stateCode;
 
     private String latitude;

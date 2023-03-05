@@ -8,6 +8,9 @@ public final class JsonProperty {
     public static final String CAPACITY = "Capacity";
     public static final String CITY = "City";
     public static final String COUNTRY = "Country";
+    public static final String COUNTRY_CODE = "country_code";
+    public static final String COUNTRY_ID = "country_id";
+    public static final String COUNTRY_NAME = "country_name";
     public static final String DATE_TIME = "DateTime";
     public static final String DAY = "Day";
     public static final String HOME_TEAM_ID = "HomeTeamID";
@@ -18,6 +21,7 @@ public final class JsonProperty {
     public static final String NAME = "Name";
     public static final String STADIUM_ID = "StadiumID";
     public static final String STATE = "State";
+    public static final String STATE_CODE = "state_code";
     public static final String STATUS = "Status";
     public static final String UPDATED = "Updated";
     public static final String VENUE_ID = "VenueId";
