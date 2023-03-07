@@ -15,7 +15,6 @@ import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
 import sh.stefoosh.sportsdata.model.NhlArena;
 import sh.stefoosh.sportsdata.model.NhlGame;
-import sh.stefoosh.sportsdata.model.SoccerVenue;
 import sh.stefoosh.sportsdata.model.StadiumVenue;
 import sh.stefoosh.sportsdata.repository.GamesRepository;
 import sh.stefoosh.sportsdata.repository.StadiumVenueRepository;
@@ -23,7 +22,8 @@ import sh.stefoosh.sportsdata.service.SportsDataService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA;
 import static sh.stefoosh.sportsdata.constants.Package.SH_STEFOOSH_SPORTSDATA_REPOSITORY;
@@ -62,50 +62,57 @@ public class Importer implements CommandLineRunner, ExitCodeGenerator {
         }
     }
 
-    private Stream<List<? extends StadiumVenue>> fetchUpstreamLocations() {
-        List<MlbStadium> upstreamMlbStadiums = sportsDataService.getMlbStadiums();
-        List<NhlArena> upstreamNhlStadiums = sportsDataService.getNhlStadiums();
-        List<SoccerVenue> upstreamSoccerStadiums = sportsDataService.getSoccerStadiums();
-
-        return Stream.of(upstreamMlbStadiums, upstreamNhlStadiums, upstreamSoccerStadiums);
-    }
-
-    private Stream<List<? extends Game>> fetchUpstreamGames() {
-        List<MlbGame> upstreamMlbGames = sportsDataService.getMlbGames();
-        List<NhlGame> upstreamNhlGames = sportsDataService.getNhlGames();
-
-        return Stream.of(upstreamMlbGames, upstreamNhlGames);
+    private List<? extends Game> embedDocument(final List<? extends StadiumVenue> locations,
+                                               final List<? extends Game> games) {
+        return games.stream().peek(
+                        game -> {
+                            Optional<? extends StadiumVenue> matchingLocation = locations.stream()
+                                    .filter(location -> location.getStadiumId() == game.getStadiumId())
+                                    .findFirst();
+                            if (matchingLocation.isPresent()) {
+                                game.setLocation(matchingLocation.get());
+                            } else {
+                                LOG.error("No match for game.getStadiumId={}", game.getStadiumId());
+                            }
+                        })
+                .collect(Collectors.toList());
     }
 
     @Override
     public final void run(final String... args) {
         String requiredPositionalArgumentChoices = String.format("Two positional arguments required: %s %s",
-                Arrays.toString(Sport.values()), Arrays.toString(Collection.values()));
+                Arrays.toString(Sport.values()), Arrays.toString(DataCategory.values()));
 
         if (args.length == 2) {
             try {
-                Sport sport = Sport.valueOf(args[0]);
-                Collection collection = Collection.valueOf(args[1]);
-
-//                if (sport.equals(Sport.mlb)) {
-//                    if(collection.equals(Collection.location)) {
-//
-//                    }
-//                    if(collection.equals(Collection.game)) {
-//
-//                    }
-//                }
+                Sport sportArgument = Sport.valueOf(args[0]);
+                DataCategory categoryArgument = DataCategory.valueOf(args[1]);
 
                 // delete before writing to repo
                 // catch upstream communication exception
-                if (sport.equals(Sport.nhl)) {
-                    if (collection.equals(Collection.game)) {
-                        saveAllModels(sportsDataService.getNhlGames(), gamesRepository);
+                if (sportArgument.equals(Sport.nhl)) {
+                    if (categoryArgument.equals(DataCategory.games)) {
+                        List<NhlArena> upstreamArenas = sportsDataService.getNhlStadiums();
+                        List<NhlGame> upstreamGames = sportsDataService.getNhlGames();
+                        List<NhlGame> embeddedDocs = (List<NhlGame>) embedDocument(upstreamArenas, upstreamGames);
+
+                        embeddedDocs.forEach(doc -> LOG.debug(doc.toString()));
+
+                        saveAllModels(embeddedDocs, gamesRepository);
                     }
                 }
 
-// fetchUpstreamLocations().forEach(upstreamLocations -> saveAllModels(upstreamLocations, stadiumVenueRepository));
-// fetchUpstreamGames().forEach(upstreamGameModels -> saveAllModels(upstreamGameModels, gamesRepository));
+                if (sportArgument.equals(Sport.mlb)) {
+                    if (categoryArgument.equals(DataCategory.games)) {
+                        List<MlbStadium> upstreamStadiums = sportsDataService.getMlbStadiums();
+                        List<MlbGame> upstreamGames = sportsDataService.getMlbGames();
+                        List<MlbGame> embeddedDocs = (List<MlbGame>) embedDocument(upstreamStadiums, upstreamGames);
+
+                        embeddedDocs.forEach(doc -> LOG.debug(doc.toString()));
+
+                        saveAllModels(embeddedDocs, gamesRepository);
+                    }
+                }
 
                 exitCode = 0;
             } catch (IllegalArgumentException e) {
@@ -127,8 +134,8 @@ public class Importer implements CommandLineRunner, ExitCodeGenerator {
         return exitCode;
     }
 
-    private enum Collection {
-        location,
-        game
+    private enum DataCategory {
+        locations,
+        games
     }
 }

@@ -14,6 +14,7 @@ import java.util.Date;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.AWAY_TEAM;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.AWAY_TEAM_ID;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.DATE_TIME;
+import static sh.stefoosh.sportsdata.constants.JsonProperty.DATE_TIME_UTC;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.DAY;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.HOME_TEAM;
 import static sh.stefoosh.sportsdata.constants.JsonProperty.HOME_TEAM_ID;
@@ -31,33 +32,35 @@ public class NhlGame implements Game {
 
     private Sport sport = Sport.nhl;
 
+    private NhlArena location;
     @JsonProperty(STATUS)
     private String status;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ISO_8601_FORMAT)
     @JsonProperty(DAY)
     private Date day;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ISO_8601_FORMAT)
     @JsonProperty(DATE_TIME)
     private Date dateTime;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ISO_8601_FORMAT)
+    @JsonProperty(DATE_TIME_UTC)
+    private Date dateTimeUtc;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ISO_8601_FORMAT)
     @JsonProperty(UPDATED)
     private Date updated;
-
     @JsonProperty(AWAY_TEAM)
     private String awayTeam;
-
     @JsonProperty(HOME_TEAM)
     private String homeTeam;
-
     @JsonProperty(AWAY_TEAM_ID)
     private int awayTeamId;
-
     @JsonProperty(HOME_TEAM_ID)
     private int homeTeamId;
-
     @JsonProperty(STADIUM_ID)
     private int stadiumId;
+
+    @Override
+    public <T extends StadiumVenue> void setLocation(final T stadiumVenue) {
+        this.location = (NhlArena) stadiumVenue;
+    }
+
 }

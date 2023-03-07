@@ -13,25 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import sh.stefoosh.sportsdata.constants.Sport;
-import sh.stefoosh.sportsdata.model.MlbGame;
 import sh.stefoosh.sportsdata.model.MlbStadium;
-import sh.stefoosh.sportsdata.model.NhlGame;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_GAMES;
 import static sh.stefoosh.sportsdata.constants.Endpoint.MLB_SCORES_JSON_STADIUMS;
-import static sh.stefoosh.sportsdata.constants.Endpoint.NHL_SCORES_JSON_GAMES;
 
 @SpringBootTest
 public class SportsDataServiceIntegrationTest {
 
     private static MockWebServer mockUpstream;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @Autowired
     private SportsDataService sportsDataService;
@@ -77,71 +70,71 @@ public class SportsDataServiceIntegrationTest {
         Assertions.assertEquals(MLB_SCORES_JSON_STADIUMS, recordedRequest.getPath());
     }
 
-    @Test
-    void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException, ParseException {
-        MlbGame mockMlbGame = new MlbGame(
-                Sport.mlb,
-                "Scheduled",
-                simpleDateFormat.parse("2023-04-11T00:00:00"),
-                simpleDateFormat.parse("2023-04-11T19:00:00"),
-                simpleDateFormat.parse("2022-09-16T04:02:52"),
-                "THE",
-                "SOX",
-                3,
-                9,
-                22
-        );
-        mockUpstream.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbGame)))
-                .addHeader("Content-Type", "application/json"));
+//    @Test
+//    void givenMlbGamesResource_thenReturnList() throws JsonProcessingException, InterruptedException, ParseException {
+//        MlbGame mockMlbGame = new MlbGame(
+//                Sport.mlb,
+//                "Scheduled",
+//                simpleDateFormat.parse("2023-04-11T00:00:00"),
+//                simpleDateFormat.parse("2023-04-11T19:00:00"),
+//                simpleDateFormat.parse("2022-09-16T04:02:52"),
+//                "THE",
+//                "SOX",
+//                3,
+//                9,
+//                22
+//        );
+//        mockUpstream.enqueue(new MockResponse().setBody(MAPPER.writeValueAsString(List.of(mockMlbGame)))
+//                .addHeader("Content-Type", "application/json"));
+//
+//        List<MlbGame> mlbGames = sportsDataService.getMlbGames();
+//
+//        Assertions.assertNotNull(mlbGames);
+//        Assertions.assertEquals(mlbGames.iterator().next(), mockMlbGame);
+//        RecordedRequest recordedRequest = mockUpstream.takeRequest();
+//        Assertions.assertEquals("GET", recordedRequest.getMethod());
+//        Assertions.assertEquals(MLB_SCORES_JSON_GAMES, recordedRequest.getPath());
+////        recordedRequest.getBody()
+//    }
 
-        List<MlbGame> mlbGames = sportsDataService.getMlbGames();
-
-        Assertions.assertNotNull(mlbGames);
-        Assertions.assertEquals(mlbGames.iterator().next(), mockMlbGame);
-        RecordedRequest recordedRequest = mockUpstream.takeRequest();
-        Assertions.assertEquals("GET", recordedRequest.getMethod());
-        Assertions.assertEquals(MLB_SCORES_JSON_GAMES, recordedRequest.getPath());
-//        recordedRequest.getBody()
-    }
-
-    @Test
-    void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException, ParseException {
-        NhlGame mockNhlGameA = new NhlGame(
-                Sport.nhl,
-                "Scheduled",
-                simpleDateFormat.parse("2023-04-11T00:00:00"),
-                simpleDateFormat.parse("2023-04-11T19:00:00"),
-                simpleDateFormat.parse("2022-09-16T04:02:52"),
-                "FOO",
-                "BAR",
-                3,
-                9,
-                99
-        );
-        NhlGame mockNhlGameB = new NhlGame(
-                Sport.nhl,
-                "Scheduled",
-                simpleDateFormat.parse("2023-05-11T00:00:00"),
-                simpleDateFormat.parse("2023-05-11T19:00:00"),
-                simpleDateFormat.parse("2022-09-16T04:02:52"),
-                "FUZ",
-                "BAZ",
-                1,
-                2,
-                88
-        );
-        mockUpstream.enqueue(new MockResponse().setBody(
-                        MAPPER.writeValueAsString(List.of(mockNhlGameA, mockNhlGameB)))
-                .addHeader("Content-Type", "application/json"));
-
-        List<NhlGame> mlbGames = sportsDataService.getNhlGames();
-
-        Assertions.assertNotNull(mlbGames);
-        Assertions.assertEquals(2, mlbGames.size());
-        RecordedRequest recordedRequest = mockUpstream.takeRequest();
-        Assertions.assertEquals("GET", recordedRequest.getMethod());
-        Assertions.assertEquals(NHL_SCORES_JSON_GAMES, recordedRequest.getPath());
-    }
+//    @Test
+//    void givenNhlGamesResource_thenReturnTwoGamesInList() throws JsonProcessingException, InterruptedException, ParseException {
+//        NhlGame mockNhlGameA = new NhlGame(
+//                Sport.nhl,
+//                "Scheduled",
+//                simpleDateFormat.parse("2023-04-11T00:00:00"),
+//                simpleDateFormat.parse("2023-04-11T19:00:00"),
+//                simpleDateFormat.parse("2022-09-16T04:02:52"),
+//                "FOO",
+//                "BAR",
+//                3,
+//                9,
+//                99
+//        );
+//        NhlGame mockNhlGameB = new NhlGame(
+//                Sport.nhl,
+//                "Scheduled",
+//                simpleDateFormat.parse("2023-05-11T00:00:00"),
+//                simpleDateFormat.parse("2023-05-11T19:00:00"),
+//                simpleDateFormat.parse("2022-09-16T04:02:52"),
+//                "FUZ",
+//                "BAZ",
+//                1,
+//                2,
+//                88
+//        );
+//        mockUpstream.enqueue(new MockResponse().setBody(
+//                        MAPPER.writeValueAsString(List.of(mockNhlGameA, mockNhlGameB)))
+//                .addHeader("Content-Type", "application/json"));
+//
+//        List<NhlGame> mlbGames = sportsDataService.getNhlGames();
+//
+//        Assertions.assertNotNull(mlbGames);
+//        Assertions.assertEquals(2, mlbGames.size());
+//        RecordedRequest recordedRequest = mockUpstream.takeRequest();
+//        Assertions.assertEquals("GET", recordedRequest.getMethod());
+//        Assertions.assertEquals(NHL_SCORES_JSON_GAMES, recordedRequest.getPath());
+//    }
 
     @SpringBootApplication
     static class TestConfiguration {

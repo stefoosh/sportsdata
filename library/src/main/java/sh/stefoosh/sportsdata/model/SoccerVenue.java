@@ -46,4 +46,9 @@ public class SoccerVenue implements StadiumVenue {
 
     @JsonProperty(CAPACITY)
     private int capacity;
+
+    @Override
+    public int getStadiumId() {
+        return getVenueId();
+    }
 }

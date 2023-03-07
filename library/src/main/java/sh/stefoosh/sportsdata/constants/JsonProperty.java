@@ -12,6 +12,7 @@ public final class JsonProperty {
     public static final String COUNTRY_ID = "country_id";
     public static final String COUNTRY_NAME = "country_name";
     public static final String DATE_TIME = "DateTime";
+    public static final String DATE_TIME_UTC = "DateTimeUTC";
     public static final String DAY = "Day";
     public static final String HOME_TEAM_ID = "HomeTeamID";
     public static final String HOME_TEAM = "HomeTeam";
