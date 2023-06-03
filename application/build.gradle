@@ -1,11 +1,6 @@
 import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
 
 buildscript {
-    dependencies {
-//		classpath "io.spring.gradle:dependency-management-plugin:${springGradleDependencyManagementPluginVersion}"
-//		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-//		classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:{$spotbugsPluginVersion}"
-    }
     repositories {
         mavenLocal()
         mavenCentral()
@@ -62,7 +57,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}"
     implementation project(':library')
-    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation "org.projectlombok:lombok:${lombokVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testContainersVersion}"
